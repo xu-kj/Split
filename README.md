@@ -1,2 +1,2 @@
 # $plit!
-The #$plit!# App
+The $plit! App
