@@ -6,7 +6,16 @@ target 'split' do
   use_frameworks!
 
   # Pods for split
-	pod 'TesseractOCRiOS'
+  pod 'TesseractOCRiOS'
+
+  post_install do |installer|
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['ENABLE_BITCODE'] = 'NO'
+      end
+    end
+  end
+
   target 'splitTests' do
     inherit! :search_paths
     # Pods for testing
