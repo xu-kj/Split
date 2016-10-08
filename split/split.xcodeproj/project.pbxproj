@@ -17,6 +17,9 @@
 		9693FA081D9E1B3200E7BFF7 /* splitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9693FA071D9E1B3200E7BFF7 /* splitTests.swift */; };
 		9693FA131D9E1B3200E7BFF7 /* splitUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9693FA121D9E1B3200E7BFF7 /* splitUITests.swift */; };
 		AD2558CDEF55AD0A983DE792 /* Pods_split.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A6DC67E7320CAF7B043AC04 /* Pods_split.framework */; };
+		E27364B91DA8A54500455063 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = E27364B81DA8A54500455063 /* assets */; };
+		E27364BB1DA8AEE800455063 /* AlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27364BA1DA8AEE800455063 /* AlbumViewController.swift */; };
+		E27364BD1DA8B0E900455063 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27364BC1DA8B0E900455063 /* CameraViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +62,9 @@
 		9693FA121D9E1B3200E7BFF7 /* splitUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = splitUITests.swift; sourceTree = "<group>"; };
 		9693FA141D9E1B3200E7BFF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C4E0859BA70CF434482AE6F1 /* Pods_splitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_splitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E27364B81DA8A54500455063 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../../assets; sourceTree = "<group>"; };
+		E27364BA1DA8AEE800455063 /* AlbumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumViewController.swift; sourceTree = "<group>"; };
+		E27364BC1DA8B0E900455063 /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,7 +135,10 @@
 			children = (
 				9693F9F21D9E1B3200E7BFF7 /* AppDelegate.swift */,
 				9693F9F41D9E1B3200E7BFF7 /* ViewController.swift */,
+				E27364BA1DA8AEE800455063 /* AlbumViewController.swift */,
+				E27364BC1DA8B0E900455063 /* CameraViewController.swift */,
 				9693F9F61D9E1B3200E7BFF7 /* Main.storyboard */,
+				E27364B81DA8A54500455063 /* assets */,
 				9693F9F91D9E1B3200E7BFF7 /* Assets.xcassets */,
 				9693F9FB1D9E1B3200E7BFF7 /* LaunchScreen.storyboard */,
 				9693F9FE1D9E1B3200E7BFF7 /* Info.plist */,
@@ -241,15 +250,18 @@
 				TargetAttributes = {
 					9693F9EE1D9E1B3200E7BFF7 = {
 						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = Y22ZUEX5TV;
 						ProvisioningStyle = Automatic;
 					};
 					9693FA021D9E1B3200E7BFF7 = {
 						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = Y22ZUEX5TV;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 9693F9EE1D9E1B3200E7BFF7;
 					};
 					9693FA0D1D9E1B3200E7BFF7 = {
 						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = Y22ZUEX5TV;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 9693F9EE1D9E1B3200E7BFF7;
 					};
@@ -281,6 +293,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9693F9FD1D9E1B3200E7BFF7 /* LaunchScreen.storyboard in Resources */,
+				E27364B91DA8A54500455063 /* assets in Resources */,
 				9693F9FA1D9E1B3200E7BFF7 /* Assets.xcassets in Resources */,
 				9693F9F81D9E1B3200E7BFF7 /* Main.storyboard in Resources */,
 			);
@@ -430,6 +443,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E27364BB1DA8AEE800455063 /* AlbumViewController.swift in Sources */,
+				E27364BD1DA8B0E900455063 /* CameraViewController.swift in Sources */,
 				9693F9F51D9E1B3200E7BFF7 /* ViewController.swift in Sources */,
 				9693F9F31D9E1B3200E7BFF7 /* AppDelegate.swift in Sources */,
 			);
@@ -508,9 +523,11 @@
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = Y22ZUEX5TV;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -558,9 +575,11 @@
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = Y22ZUEX5TV;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -584,7 +603,11 @@
 			baseConfigurationReference = 124082DA5B6F3A39313C4A42 /* Pods-split.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = Y22ZUEX5TV;
 				INFOPLIST_FILE = split/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.panaroma.split;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -597,7 +620,11 @@
 			baseConfigurationReference = 7F161C47BAC15839F82F635C /* Pods-split.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = Y22ZUEX5TV;
 				INFOPLIST_FILE = split/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.panaroma.split;
 				PRODUCT_NAME = "$(TARGET_NAME)";
