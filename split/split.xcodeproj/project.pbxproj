@@ -16,12 +16,12 @@
 		9693F9FD1D9E1B3200E7BFF7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9693F9FB1D9E1B3200E7BFF7 /* LaunchScreen.storyboard */; };
 		9693FA081D9E1B3200E7BFF7 /* splitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9693FA071D9E1B3200E7BFF7 /* splitTests.swift */; };
 		9693FA131D9E1B3200E7BFF7 /* splitUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9693FA121D9E1B3200E7BFF7 /* splitUITests.swift */; };
-		96B2B5791DA9B56F008ABBBE /* RecognitionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96B2B5781DA9B56F008ABBBE /* RecognitionViewController.swift */; };
 		96B2B57B1DA9B68E008ABBBE /* tessdata in Resources */ = {isa = PBXBuildFile; fileRef = 96B2B57A1DA9B68E008ABBBE /* tessdata */; };
 		AD2558CDEF55AD0A983DE792 /* Pods_split.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A6DC67E7320CAF7B043AC04 /* Pods_split.framework */; };
 		E27364B91DA8A54500455063 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = E27364B81DA8A54500455063 /* assets */; };
-		E27364BB1DA8AEE800455063 /* AlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27364BA1DA8AEE800455063 /* AlbumViewController.swift */; };
-		E27364BD1DA8B0E900455063 /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27364BC1DA8B0E900455063 /* CameraViewController.swift */; };
+		E27364BF1DA9FCAA00455063 /* Recognition.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27364BE1DA9FCAA00455063 /* Recognition.swift */; };
+		E27364C11DAA091100455063 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27364C01DAA091100455063 /* NavigationController.swift */; };
+		E27364C31DAA1D4E00455063 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27364C21DAA1D4E00455063 /* DetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,12 +63,12 @@
 		9693FA0E1D9E1B3200E7BFF7 /* splitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = splitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9693FA121D9E1B3200E7BFF7 /* splitUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = splitUITests.swift; sourceTree = "<group>"; };
 		9693FA141D9E1B3200E7BFF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		96B2B5781DA9B56F008ABBBE /* RecognitionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecognitionViewController.swift; sourceTree = "<group>"; };
 		96B2B57A1DA9B68E008ABBBE /* tessdata */ = {isa = PBXFileReference; lastKnownFileType = folder; path = tessdata; sourceTree = "<group>"; };
 		C4E0859BA70CF434482AE6F1 /* Pods_splitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_splitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E27364B81DA8A54500455063 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../../assets; sourceTree = "<group>"; };
-		E27364BA1DA8AEE800455063 /* AlbumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumViewController.swift; sourceTree = "<group>"; };
-		E27364BC1DA8B0E900455063 /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
+		E27364BE1DA9FCAA00455063 /* Recognition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Recognition.swift; sourceTree = "<group>"; };
+		E27364C01DAA091100455063 /* NavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		E27364C21DAA1D4E00455063 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,9 +139,9 @@
 			children = (
 				9693F9F21D9E1B3200E7BFF7 /* AppDelegate.swift */,
 				9693F9F41D9E1B3200E7BFF7 /* ViewController.swift */,
-				E27364BA1DA8AEE800455063 /* AlbumViewController.swift */,
-				E27364BC1DA8B0E900455063 /* CameraViewController.swift */,
-				96B2B5781DA9B56F008ABBBE /* RecognitionViewController.swift */,
+				E27364C01DAA091100455063 /* NavigationController.swift */,
+				E27364C21DAA1D4E00455063 /* DetailViewController.swift */,
+				E27364BE1DA9FCAA00455063 /* Recognition.swift */,
 				9693F9F61D9E1B3200E7BFF7 /* Main.storyboard */,
 				96B2B57A1DA9B68E008ABBBE /* tessdata */,
 				E27364B81DA8A54500455063 /* assets */,
@@ -450,10 +450,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E27364BB1DA8AEE800455063 /* AlbumViewController.swift in Sources */,
-				E27364BD1DA8B0E900455063 /* CameraViewController.swift in Sources */,
-				96B2B5791DA9B56F008ABBBE /* RecognitionViewController.swift in Sources */,
 				9693F9F51D9E1B3200E7BFF7 /* ViewController.swift in Sources */,
+				E27364C11DAA091100455063 /* NavigationController.swift in Sources */,
+				E27364C31DAA1D4E00455063 /* DetailViewController.swift in Sources */,
+				E27364BF1DA9FCAA00455063 /* Recognition.swift in Sources */,
 				9693F9F31D9E1B3200E7BFF7 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

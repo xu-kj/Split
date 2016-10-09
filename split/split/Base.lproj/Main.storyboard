@@ -6,7 +6,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Split!-->
+        <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="split" customModuleProvider="target" sceneMemberID="viewController">
@@ -15,152 +15,130 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nfj-A2-knG">
-                                <frame key="frameInset" minX="133" minY="119" width="109" height="106"/>
+                                <frame key="frameInset" minX="133" minY="64" width="109" height="106"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.23332182166223125" green="0.59816199668894054" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
-                                    <segue destination="NF6-n8-Cbb" kind="show" id="Uzb-yu-vvd"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iBP-2b-3rz">
-                                <frame key="frameInset" minX="133" minY="297" width="109" height="106"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.23332182169999999" green="0.59816199670000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="Album"/>
-                                <connections>
-                                    <segue destination="gFT-as-5PO" kind="show" id="5fs-7R-PUe"/>
+                                    <action selector="cameraButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Sms-Py-d3U"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qQK-hh-f0R">
-                                <frame key="frameInset" minX="133" minY="474" width="109" height="106"/>
+                                <frame key="frameInset" minX="133" minY="392" width="109" height="106"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.23332182169999999" green="0.59816199670000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <state key="normal" title="+"/>
                                 <connections>
                                     <segue destination="gEb-q6-Vhn" kind="show" id="asv-79-Mgf"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iBP-2b-3rz">
+                                <frame key="frameInset" minX="133" minY="228" width="109" height="106"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="albumButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JHS-rC-BE4"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Split!" id="k2g-Fz-RjS"/>
+                    <navigationItem key="navigationItem" id="k2g-Fz-RjS"/>
                     <connections>
-                        <outlet property="addButton" destination="qQK-hh-f0R" id="4Sk-9Z-PW5"/>
                         <outlet property="albumButton" destination="iBP-2b-3rz" id="qFD-vx-yzv"/>
                         <outlet property="cameraButton" destination="Nfj-A2-knG" id="oDB-UL-OF5"/>
+                        <outlet property="editButton" destination="qQK-hh-f0R" id="8F3-J1-3Ni"/>
+                        <segue destination="gEb-q6-Vhn" kind="show" identifier="ToTable" id="ROp-KL-hO2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1204" y="38.23088455772114"/>
         </scene>
-        <!--Split!-->
+        <!--Detail View Controller-->
         <scene sceneID="bJT-8K-P54">
             <objects>
-                <viewController title="Split!" id="gEb-q6-Vhn" sceneMemberID="viewController">
+                <viewController id="gEb-q6-Vhn" customClass="DetailViewController" customModule="split" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="NaU-Kp-s4X"/>
                         <viewControllerLayoutGuide type="bottom" id="3RX-8K-kvy"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Kgu-YZ-DtX">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="BC3-1o-7Nr">
-                                <frame key="frameInset" minX="16" minY="75" width="343" height="572"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsMultipleSelection="YES" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="BC3-1o-7Nr">
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="375" id="bKL-bJ-46Y"/>
+                                </constraints>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="tableCell" id="EFv-Y0-Nke">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EFv-Y0-Nke" id="VPn-no-IjB">
+                                            <frame key="frameInset" width="375" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a32-7A-77R">
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W4s-vf-uDv">
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="42" id="XMo-Uc-3FH"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="W4s-vf-uDv" firstAttribute="top" secondItem="VPn-no-IjB" secondAttribute="top" constant="2" id="A9l-Qp-tLS"/>
+                                                <constraint firstItem="a32-7A-77R" firstAttribute="top" secondItem="VPn-no-IjB" secondAttribute="top" constant="2" id="DGR-kD-MBC"/>
+                                                <constraint firstItem="a32-7A-77R" firstAttribute="leading" secondItem="VPn-no-IjB" secondAttribute="leading" constant="20" symbolic="YES" id="Fes-Ep-Qe1"/>
+                                                <constraint firstAttribute="trailing" secondItem="W4s-vf-uDv" secondAttribute="trailing" constant="20" symbolic="YES" id="uE2-Jq-h8h"/>
+                                                <constraint firstItem="W4s-vf-uDv" firstAttribute="leading" secondItem="a32-7A-77R" secondAttribute="trailing" constant="8" symbolic="YES" id="yeY-s7-8ph"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="gEb-q6-Vhn" id="bWR-vp-4cT"/>
+                                    <outlet property="delegate" destination="gEb-q6-Vhn" id="uDF-AH-nDD"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="3RX-8K-kvy" firstAttribute="top" secondItem="BC3-1o-7Nr" secondAttribute="bottom" constant="70" id="Dot-Ep-xd0"/>
+                            <constraint firstItem="BC3-1o-7Nr" firstAttribute="leading" secondItem="Kgu-YZ-DtX" secondAttribute="leading" id="LJd-DM-OUa"/>
+                            <constraint firstAttribute="trailing" secondItem="BC3-1o-7Nr" secondAttribute="trailing" id="cft-80-pcU"/>
+                            <constraint firstItem="BC3-1o-7Nr" firstAttribute="top" secondItem="NaU-Kp-s4X" secondAttribute="bottom" id="jbT-ph-MyN"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="tableView" destination="BC3-1o-7Nr" id="Cgx-2Q-7Pv"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T7f-JR-wS3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="663" y="883"/>
+            <point key="canvasLocation" x="661.60000000000002" y="882.90854572713647"/>
         </scene>
-        <!--Split!-->
-        <scene sceneID="ge6-m2-c9J">
-            <objects>
-                <viewController title="Split!" id="gFT-as-5PO" customClass="AlbumViewController" customModule="split" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="v2H-to-PDZ"/>
-                        <viewControllerLayoutGuide type="bottom" id="yO5-7F-T6R"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Vht-PU-z7Q">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cea-le-uyR">
-                                <frame key="frameInset" minX="164" minY="502" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <connections>
-                                    <action selector="fromAlbum:" destination="gFT-as-5PO" eventType="touchUpInside" id="ThJ-0I-eZC"/>
-                                </connections>
-                            </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DaO-jr-54D">
-                                <frame key="frameInset" minX="23" minY="111" width="328" height="312"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <connections>
-                        <outlet property="imageView" destination="DaO-jr-54D" id="soz-MN-Nhf"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="UAK-Sy-M8k" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1749.5999999999999" y="882.90854572713647"/>
-        </scene>
-        <!--Split!-->
-        <scene sceneID="K5r-48-NGI">
-            <objects>
-                <viewController title="Split!" id="NF6-n8-Cbb" customClass="CameraViewController" customModule="split" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="6Xk-ET-EkS"/>
-                        <viewControllerLayoutGuide type="bottom" id="HsF-rW-VUW"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="aZE-jj-Iak">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iVY-m5-Jyz">
-                                <frame key="frameInset" minX="25" minY="104" width="334" height="384"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MxB-vV-qxQ">
-                                <frame key="frameInset" minX="164" minY="576" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <connections>
-                                    <action selector="confirmButton:" destination="NF6-n8-Cbb" eventType="touchUpInside" id="GYp-Vs-OjG"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <connections>
-                        <outlet property="imageView" destination="iVY-m5-Jyz" id="9kw-et-8c0"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="nwA-tm-kp4" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2044" y="37.331334332833585"/>
-        </scene>
-        <!--Navigation Controller-->
+        <!--Split-->
         <scene sceneID="r66-QR-Bkk">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="lvw-xY-4Vr" sceneMemberID="viewController">
+                <navigationController title="Split" automaticallyAdjustsScrollViewInsets="NO" id="lvw-xY-4Vr" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="yBF-Fy-MFa">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="yBF-Fy-MFa">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="0.93725490570000003" green="0.93725490570000003" blue="0.95686274770000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="barTintColor" red="0.1529411765" green="0.30588235289999999" blue="0.75294117650000003" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                            <color key="textColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -172,4 +150,7 @@
             <point key="canvasLocation" x="264.80000000000001" y="38.23088455772114"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="ROp-KL-hO2"/>
+    </inferredMetricsTieBreakers>
 </document>

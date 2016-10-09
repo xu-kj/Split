@@ -18,10 +18,10 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
         tesseract.delegate = self;
         // tesseract.charWhitelist = "01234567890";
         tesseract.image = self.imageView.image
-//            UIImage(named: "assets/IMG_3727.jpg");
+//            UIImage(named: "assets/test.jpg");
         tesseract.recognize();
         
-        NSLog("%@", tesseract.recognizedText);
+        print("%@", tesseract.recognizedText);
         
     }
     

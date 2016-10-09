@@ -13,17 +13,20 @@ import UIKit
 class AlbumViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBOutlet weak var imageView: UIImageView!
-    @IBAction func fromAlbum(_ sender: AnyObject) {
-        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
+    @IBAction func reSelectButton(_ sender: AnyObject) {
+        selectFromAlbum()
+    }
+    
+    func selectFromAlbum() {
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
             let picker = UIImagePickerController()
             picker.delegate = self
             picker.sourceType = UIImagePickerControllerSourceType.photoLibrary
-            self.present(picker, animated: true, completion: {
-                () -> Void in
-            })
+            picker.allowsEditing = true
+            self.present(picker, animated: false, completion: nil)
         }
-        else{
-            print("cannot read from album")
+        else {
+            print("can't find album")
         }
     }
     
@@ -33,14 +36,15 @@ class AlbumViewController: UIViewController, UIImagePickerControllerDelegate, UI
         picker.dismiss(animated: true, completion: nil)
     }
     
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        print("imagePickerControllerDidCancel")
-        picker.dismiss(animated: true, completion: nil)
-    }
+//    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+//        print("imagePickerControllerDidCancel")
+//        picker.dismiss(animated: true, completion: nil)
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        selectFromAlbum()
     }
     
     override func didReceiveMemoryWarning() {
