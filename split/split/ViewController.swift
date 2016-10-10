@@ -61,11 +61,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
 	}
     
     override func viewDidAppear(_ animated: Bool) {
-        let imageView = UIImageView(frame: CGRect(x: 0, y:0, width: 75, height: 35))
+        let imageView = UIImageView(frame: CGRect(x: 0, y:0, width: self.view.frame.width, height: 35))
         imageView.contentMode = .scaleAspectFit
         let image = UIImage(named:"assets/logo.png")?.withRenderingMode(.automatic)
         imageView.image = image
-        self.navigationController?.navigationBar.frame = CGRect(x: 0, y: 15, width: 375, height: 50)
+        self.navigationController?.navigationBar.frame = CGRect(x: 0, y: 15, width: self.view.frame.width, height: 50)
         self.navigationController?.navigationBar.topItem?.titleView = imageView
     }
     

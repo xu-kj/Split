@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="lvw-xY-4Vr">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="lvw-xY-4Vr">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
@@ -66,7 +66,7 @@
                         <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsMultipleSelection="YES" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="BC3-1o-7Nr">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsMultipleSelection="YES" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="BC3-1o-7Nr">
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="375" id="bKL-bJ-46Y"/>
@@ -76,26 +76,26 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EFv-Y0-Nke" id="VPn-no-IjB">
-                                            <frame key="frameInset" width="375" height="43"/>
+                                            <frame key="frameInset" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a32-7A-77R">
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="18"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W4s-vf-uDv">
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="42" id="XMo-Uc-3FH"/>
+                                                        <constraint firstAttribute="width" constant="55" id="XMo-Uc-3FH"/>
                                                     </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="18"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="W4s-vf-uDv" firstAttribute="top" secondItem="VPn-no-IjB" secondAttribute="top" constant="2" id="A9l-Qp-tLS"/>
-                                                <constraint firstItem="a32-7A-77R" firstAttribute="top" secondItem="VPn-no-IjB" secondAttribute="top" constant="2" id="DGR-kD-MBC"/>
+                                                <constraint firstItem="W4s-vf-uDv" firstAttribute="top" secondItem="VPn-no-IjB" secondAttribute="top" constant="20" symbolic="YES" id="A9l-Qp-tLS"/>
+                                                <constraint firstItem="a32-7A-77R" firstAttribute="top" secondItem="VPn-no-IjB" secondAttribute="top" constant="20" symbolic="YES" id="DGR-kD-MBC"/>
                                                 <constraint firstItem="a32-7A-77R" firstAttribute="leading" secondItem="VPn-no-IjB" secondAttribute="leading" constant="20" symbolic="YES" id="Fes-Ep-Qe1"/>
                                                 <constraint firstAttribute="trailing" secondItem="W4s-vf-uDv" secondAttribute="trailing" constant="20" symbolic="YES" id="uE2-Jq-h8h"/>
                                                 <constraint firstItem="W4s-vf-uDv" firstAttribute="leading" secondItem="a32-7A-77R" secondAttribute="trailing" constant="8" symbolic="YES" id="yeY-s7-8ph"/>
@@ -108,16 +108,25 @@
                                     <outlet property="delegate" destination="gEb-q6-Vhn" id="uDF-AH-nDD"/>
                                 </connections>
                             </tableView>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lI5-Sc-oh5">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="70" id="OYo-aN-SoY"/>
+                                </constraints>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="3RX-8K-kvy" firstAttribute="top" secondItem="BC3-1o-7Nr" secondAttribute="bottom" constant="70" id="Dot-Ep-xd0"/>
+                            <constraint firstAttribute="trailing" secondItem="lI5-Sc-oh5" secondAttribute="trailing" id="FfT-Hr-dtP"/>
                             <constraint firstItem="BC3-1o-7Nr" firstAttribute="leading" secondItem="Kgu-YZ-DtX" secondAttribute="leading" id="LJd-DM-OUa"/>
+                            <constraint firstItem="lI5-Sc-oh5" firstAttribute="top" secondItem="BC3-1o-7Nr" secondAttribute="bottom" id="VTx-q4-2Xk"/>
+                            <constraint firstItem="3RX-8K-kvy" firstAttribute="top" secondItem="lI5-Sc-oh5" secondAttribute="bottom" id="YtV-Ab-sri"/>
                             <constraint firstAttribute="trailing" secondItem="BC3-1o-7Nr" secondAttribute="trailing" id="cft-80-pcU"/>
                             <constraint firstItem="BC3-1o-7Nr" firstAttribute="top" secondItem="NaU-Kp-s4X" secondAttribute="bottom" id="jbT-ph-MyN"/>
+                            <constraint firstItem="lI5-Sc-oh5" firstAttribute="leading" secondItem="Kgu-YZ-DtX" secondAttribute="leading" id="lGA-Qi-z4W"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="scrollView" destination="lI5-Sc-oh5" id="HRU-9i-nOx"/>
                         <outlet property="tableView" destination="BC3-1o-7Nr" id="Cgx-2Q-7Pv"/>
                     </connections>
                 </viewController>
@@ -130,13 +139,13 @@
             <objects>
                 <navigationController title="Split" automaticallyAdjustsScrollViewInsets="NO" id="lvw-xY-4Vr" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="yBF-Fy-MFa">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="yBF-Fy-MFa">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="0.93725490570000003" green="0.93725490570000003" blue="0.95686274770000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="barTintColor" red="0.1529411765" green="0.30588235289999999" blue="0.75294117650000003" alpha="1" colorSpace="calibratedRGB"/>
                         <textAttributes key="titleTextAttributes">
-                            <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                            <fontDescription key="fontDescription" name="TrebuchetMS-Bold" family="Trebuchet MS" pointSize="21"/>
                             <color key="textColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         </textAttributes>
                     </navigationBar>
