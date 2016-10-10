@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		4BB520857C9A46C5BB13B2FD /* Pods_splitUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EC517E3E17AB7E8185E8B17 /* Pods_splitUITests.framework */; };
 		645F441FB4AD53B44055BEB0 /* Pods_splitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4E0859BA70CF434482AE6F1 /* Pods_splitTests.framework */; };
+		8144BACE1DAB29D3006DD6FE /* AddContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8144BACD1DAB29D3006DD6FE /* AddContactViewController.swift */; };
 		9693F9F31D9E1B3200E7BFF7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9693F9F21D9E1B3200E7BFF7 /* AppDelegate.swift */; };
 		9693F9F51D9E1B3200E7BFF7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9693F9F41D9E1B3200E7BFF7 /* ViewController.swift */; };
 		9693F9F81D9E1B3200E7BFF7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9693F9F61D9E1B3200E7BFF7 /* Main.storyboard */; };
@@ -49,6 +50,7 @@
 		3EC517E3E17AB7E8185E8B17 /* Pods_splitUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_splitUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		755D8063C37858176ABEF8DB /* Pods-splitUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-splitUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-splitUITests/Pods-splitUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		7F161C47BAC15839F82F635C /* Pods-split.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-split.release.xcconfig"; path = "Pods/Target Support Files/Pods-split/Pods-split.release.xcconfig"; sourceTree = "<group>"; };
+		8144BACD1DAB29D3006DD6FE /* AddContactViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddContactViewController.swift; sourceTree = "<group>"; };
 		9693F9EF1D9E1B3200E7BFF7 /* split.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = split.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9693F9F21D9E1B3200E7BFF7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9693F9F41D9E1B3200E7BFF7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 				9693F9F21D9E1B3200E7BFF7 /* AppDelegate.swift */,
 				9693F9F41D9E1B3200E7BFF7 /* ViewController.swift */,
 				E27364C21DAA1D4E00455063 /* DetailViewController.swift */,
+				8144BACD1DAB29D3006DD6FE /* AddContactViewController.swift */,
 				E27364BE1DA9FCAA00455063 /* Recognition.swift */,
 				9693F9F61D9E1B3200E7BFF7 /* Main.storyboard */,
 				96B2B57A1DA9B68E008ABBBE /* tessdata */,
@@ -447,6 +450,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8144BACE1DAB29D3006DD6FE /* AddContactViewController.swift in Sources */,
 				9693F9F51D9E1B3200E7BFF7 /* ViewController.swift in Sources */,
 				E27364C31DAA1D4E00455063 /* DetailViewController.swift in Sources */,
 				E27364BF1DA9FCAA00455063 /* Recognition.swift in Sources */,

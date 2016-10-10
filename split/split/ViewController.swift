@@ -22,7 +22,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             picker.delegate = self
             picker.sourceType = UIImagePickerControllerSourceType.camera
             picker.allowsEditing = true
-            self.present(picker, animated: false, completion: nil)
+            self.present(picker, animated: true, completion: nil)
         }
         else {
             print("can't find camera")
@@ -35,7 +35,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             picker.delegate = self
             picker.sourceType = UIImagePickerControllerSourceType.photoLibrary
             picker.allowsEditing = true
-            self.present(picker, animated: false, completion: nil)
+            self.present(picker, animated: true, completion: nil)
         }
         else {
             print("can't find album")

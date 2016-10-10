@@ -33,7 +33,7 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         super.viewDidLoad()
 		
 		self.title = "Bill Details"
-	self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil);
+        self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil);
 		
         // Do any additional setup after loading the view.
 		//containerView.backgroundColor = UIColor.yellow
@@ -67,7 +67,8 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
     }
 	
 	func addContact(_ sender: UIButton) {
-		print("click")
+        print ("button to addcontact clicked")
+		self.performSegue(withIdentifier: "ToAddContact", sender: self)
 	}
 
 }
