@@ -8,20 +8,29 @@
 
 import UIKit
 
+protocol DataEnteredDelegate: class {
+	func userDidEnterInformation(info: String)
+}
+
 class AddContactViewController: UIViewController,  UITextFieldDelegate {
     
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var mobileTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var saveButton: UIButton!
+	weak var delegate: DataEnteredDelegate? = nil
+	
     @IBAction func saveButtonClicked(_ sender: AnyObject) {
         print("save button clicked")
         // check email/mobile filled
         // save
+		
+		delegate?.userDidEnterInformation(info: nameTextField.text!)
         self.dismiss(animated: true, completion:nil)
         _ = self.navigationController?.popViewController(animated: true)
     }
-    
+	
+	
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
