@@ -43,13 +43,14 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 		if (curHighlightButton != nil && itemArray[indexPath.row].contains(curHighlightButton!)) {
 			tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.none)
 			curSum += (array[row]["price"]! as NSString).doubleValue / Double(itemArray[row].count)
-			if (curSum < 0) {
-				totalLabel.text = String(format:"Total: $0.00")
-			}
-			else {
-				totalLabel.text = String(format:"Total: $%.2f", curSum)
-			}
 		}
+		if (curSum < 0) {
+			totalLabel.text = String(format:"Total: $0.00")
+		}
+		else {
+			totalLabel.text = String(format:"Total: $%.2f", curSum)
+		}
+
         return cell
     }
 	
@@ -100,12 +101,24 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 	}
 	
 	func changeContact(_ sender: UIButton) {
-		print ("contact changed")
+		print ("Normal tap")
 		curHighlightButton?.layer.backgroundColor = UIColor.gray.cgColor
 		sender.layer.backgroundColor = UIColor(red: 39.0/255.0, green: 78.0/255.0, blue: 192.0/255.0, alpha: 1.0).cgColor
 		curHighlightButton = sender
 		curSum = 0.0
 		tableView.reloadData()
+	}
+	
+	func longTap(_ sender : UIGestureRecognizer){
+		print("Long tap")
+		if sender.state == .ended {
+			print("UIGestureRecognizerStateEnded")
+			//Do Whatever You want on End of Gesture
+		}
+		else if sender.state == .began {
+			print("UIGestureRecognizerStateBegan.")
+			//Do Whatever You want on Began of Gesture
+		}
 	}
 	
 	func userDidEnterInformation(info: String) {
@@ -118,6 +131,13 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 		usrButton.layer.backgroundColor = UIColor.gray.cgColor
 //		usrButton.showsTouchWhenHighlighted = true
 		usrButton.addTarget(self, action: #selector(DetailViewController.changeContact(_:)), for: UIControlEvents.touchUpInside)
+		
+//		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(DetailViewController.changeContact(_:)))
+//		let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(DetailViewController.longTap(_:)))
+//		usrButton.addGestureRecognizer(tapGesture)
+//		usrButton.addGestureRecognizer(longGesture)
+		
+		
 		usrButton.setTitle(info, for: UIControlState.normal)
 		start += width + sep
 		
@@ -157,10 +177,8 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 		addButton.setImage(cameraImage, for:.normal)
 		
 		self.containerView.addSubview(addButton)
-//		start = start + width
 		addButton.addTarget(self, action: #selector(DetailViewController.addContact(_:)), for: UIControlEvents.touchUpInside)
 		
-		//self.scrollView.delegate = self
 		self.containerView.frame = CGRect(x: 0, y: 0, width: start + width + sep, height: 70)
 		self.scrollView.contentSize = CGSize(width: start + width + sep, height: 70)
 		self.automaticallyAdjustsScrollViewInsets = false
