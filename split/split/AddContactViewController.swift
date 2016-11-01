@@ -9,7 +9,7 @@
 import UIKit
 
 protocol DataEnteredDelegate: class {
-	func userDidEnterInformation(info: String)
+    func userDidEnterInformation(name: String, mobile: String, email: String)
 }
 
 class AddContactViewController: UIViewController,  UITextFieldDelegate {
@@ -19,13 +19,16 @@ class AddContactViewController: UIViewController,  UITextFieldDelegate {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var saveButton: UIButton!
 	weak var delegate: DataEnteredDelegate? = nil
+    var name:String!
+    var mobile:String!
+    var email:String!
 	
     @IBAction func saveButtonClicked(_ sender: AnyObject) {
         print("save button clicked")
         // check email/mobile filled
         // save
 		
-		delegate?.userDidEnterInformation(info: nameTextField.text!)
+        delegate?.userDidEnterInformation(name: nameTextField.text!, mobile: mobileTextField.text!, email: emailTextField.text!)
         self.dismiss(animated: true, completion:nil)
         _ = self.navigationController?.popViewController(animated: true)
     }
@@ -62,6 +65,10 @@ class AddContactViewController: UIViewController,  UITextFieldDelegate {
             UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.plain, target: nil, action: #selector(self.keyboardDoneButtonTapped))]
         toolBar.sizeToFit()
         mobileTextField.inputAccessoryView = toolBar
+        
+        nameTextField.text = name
+        mobileTextField.text = mobile
+        emailTextField.text = email
     }
     
     override func didReceiveMemoryWarning() {
