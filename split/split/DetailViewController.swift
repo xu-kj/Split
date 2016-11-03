@@ -8,6 +8,9 @@
 
 import UIKit
 
+let ThrowingThreshold: CGFloat = 1000
+let ThrowingVelocityPadding: CGFloat = 35
+
 class DetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, DataEnteredDelegate {
 	
     @IBOutlet weak var barButton: UIBarButtonItem!
@@ -20,6 +23,8 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 	var height = 50
 	var margin = 10
 	var sep = 10
+	
+	var startingTag = 100
 	
     var editedIndex = -1
     
@@ -34,7 +39,103 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 	var curSum: Double = 0.0
     var shake: Bool = false;
     
-    
+	
+	fileprivate var animator: UIDynamicAnimator!
+	fileprivate var attachmentBehavior: UIAttachmentBehavior!
+	fileprivate var pushBehavior: UIPushBehavior!
+	fileprivate var itemBehavior: UIDynamicItemBehavior!
+	
+	func handleAttachmentGesture(_ sender: UIPanGestureRecognizer) {
+		if(shake) {
+		let location = sender.location(in: self.view)
+		let myButton = sender.view!
+		let boxLocation = sender.location(in: myButton)
+		
+		switch sender.state {
+		case .began:
+			print("Your touch start position is \(location)")
+			print("Start location is \(boxLocation)")
+			
+			animator.removeAllBehaviors()
+			
+//			let centerOffset = UIOffset(horizontal: boxLocation.x - myButton.bounds.midX, vertical: boxLocation.y - myButton.bounds.midY)
+			
+			let centerOffset = UIOffset(horizontal: 0, vertical: boxLocation.y - myButton.bounds.midY)
+			attachmentBehavior = UIAttachmentBehavior(item: myButton, offsetFromCenter: centerOffset, attachedToAnchor: location)
+			
+			
+			animator.addBehavior(attachmentBehavior)
+			
+		case .ended:
+			print("Your touch end position is \(location)")
+			print("End location in image is \(boxLocation)")
+			
+			animator.removeAllBehaviors()
+			
+			// 1
+			let velocity = sender.velocity(in: view)
+			let magnitude = sqrt((velocity.x * velocity.x) + (velocity.y * velocity.y))
+			
+			if magnitude > ThrowingThreshold {
+				// 2
+				let pushBehavior = UIPushBehavior(items: [myButton], mode: .instantaneous)
+				pushBehavior.pushDirection = CGVector(dx: velocity.x / 10, dy: velocity.y / 10)
+				pushBehavior.magnitude = magnitude / ThrowingVelocityPadding
+				
+				self.pushBehavior = pushBehavior
+				animator.addBehavior(pushBehavior)
+				
+				// 3
+				let angle = Int(arc4random_uniform(20)) - 10
+				
+				itemBehavior = UIDynamicItemBehavior(items: [myButton])
+				itemBehavior.friction = 0.2
+				itemBehavior.allowsRotation = true
+				itemBehavior.addAngularVelocity(CGFloat(angle), for: myButton)
+				animator.addBehavior(itemBehavior)
+				
+				// 4
+				let timeOffset = Int64(0.4 * Double(NSEC_PER_SEC))
+				DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(timeOffset) / Double(NSEC_PER_SEC)) {
+					self.resetDemo(myButton as! UIButton)
+				}
+			} else {
+				resetDemo(myButton as! UIButton)
+			}
+			
+		default:
+			attachmentBehavior.anchorPoint = sender.location(in: view)
+			break
+			}
+		}
+	}
+	
+	func resetDemo(_ myButton: UIButton) {
+		animator.removeAllBehaviors()
+		myButton.isHidden = true;
+		let index = buttonArray.index(of: myButton)!
+		start = start - width - sep
+		
+		addButton.frame = CGRect(x: start, y: margin, width: width, height: height)
+		
+		if index + 1 <= buttonArray.count - 1 {
+			for i in index + 1...buttonArray.count - 1 {
+				var frame:CGRect = buttonArray[i].frame
+				frame.origin.x = frame.origin.x - CGFloat(width + sep)
+				buttonArray[i].frame = frame
+			}
+		}
+		if myButton == curHighlightButton {
+			curHighlightButton = nil
+		}
+		buttonArray.remove(at: index)
+		self.containerView.frame = CGRect(x: 0, y: 0, width: start + width + sep, height: height + 20)
+		self.scrollView.contentSize = CGSize(width: start + width + sep, height: height + 20)
+
+		// TODO recalculate
+	}
+	
+	
     @IBAction func barButtonTapped(_ sender: UIBarButtonItem) {
         if sender.title == "Done" && shake {
             for button in buttonArray {
@@ -109,24 +210,13 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 		}
 	}
 	
+	func deleteContact(_ sender: UIButton) {
+		print("contact to be deleted")
+	}
+	
 	func addContact(_ sender: UIButton) {
         print ("button to addcontact clicked")
 		self.performSegue(withIdentifier: "ToAddContact", sender: sender)
-	}
-	
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		if (segue.identifier == "ToAddContact") {
-			let svc = segue.destination as! AddContactViewController
-			svc.delegate = self
-            let button = sender as! UIButton
-            if button != addButton {
-                editedIndex = buttonArray.index(of: button)!
-                let dict: Dictionary<String, String> = contactArray[editedIndex]
-                svc.name = dict["name"]
-                svc.mobile = dict["mobile"]
-                svc.email = dict["email"]
-            }
-		}
 	}
 	
 	func changeContact(_ sender: UIButton) {
@@ -177,6 +267,8 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         else {
             contactArray.append(["name": name, "mobile": mobile, "email": email])
             let usrButton = UIButton();
+			usrButton.tag = startingTag
+			startingTag = startingTag + 1
             usrButton.frame = CGRect(x: start, y: margin, width: width, height: height)
             usrButton.layer.cornerRadius = 25
             usrButton.layer.backgroundColor = UIColor.gray.cgColor
@@ -185,8 +277,10 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             
             let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(DetailViewController.longTap(_:)))
             usrButton.addGestureRecognizer(longGesture)
-            
-            
+			
+			let panGesture = UIPanGestureRecognizer(target: self, action: #selector(DetailViewController.handleAttachmentGesture(_:)))
+			usrButton.addGestureRecognizer(panGesture)
+			
             usrButton.setTitle(name, for: UIControlState.normal)
             start += width + sep
             
@@ -202,7 +296,7 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             self.scrollView.contentSize = CGSize(width: start + width + sep, height: 70)
             if (self.containerView.frame.width > self.view.frame.width) {
                 //			DispatchQueue.main.async {
-                UIView.animate(withDuration: 0.2, delay: 0, options: UIViewAnimationOptions.curveEaseOut,animations: {
+                UIView.animate(withDuration: 0.45, delay: 0, options: UIViewAnimationOptions.curveEaseOut,animations: {
                     self.scrollView.contentOffset.x = self.containerView.frame.width - self.view.frame.width
                     }, completion: nil)
                 //			}
@@ -216,8 +310,25 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         addButton.isHidden = false
     }
 	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if (segue.identifier == "ToAddContact") {
+			let svc = segue.destination as! AddContactViewController
+			svc.delegate = self
+			let button = sender as! UIButton
+			if button != addButton {
+				editedIndex = buttonArray.index(of: button)!
+				let dict: Dictionary<String, String> = contactArray[editedIndex]
+				svc.name = dict["name"]
+				svc.mobile = dict["mobile"]
+				svc.email = dict["email"]
+			}
+		}
+	}
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		animator = UIDynamicAnimator(referenceView: view)
 		
         NotificationCenter.default.addObserver(
             self,
@@ -235,7 +346,7 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 		scrollView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.2)
 		
 		addButton.frame = CGRect(x: start, y: margin, width: width, height: height)
-		addButton.setTitle("+", for: UIControlState.normal)
+//		addButton.setTitle("+", for: UIControlState.normal)
 		let cameraImage = UIImage(named:"assets/add.png")?.withRenderingMode(.automatic)
 		addButton.setImage(cameraImage, for:.normal)
 		
