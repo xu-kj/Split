@@ -17,6 +17,10 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 	@IBOutlet weak var totalLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
 	@IBOutlet weak var scrollView: UIScrollView!
+	
+	let panGesture = UIPanGestureRecognizer(target: self, action: #selector(DetailViewController.handleAttachmentGesture(_:)))
+//	let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(DetailViewController.longTap(_:)))
+	
     var containerView = UIView()
 	var start = 10
 	var width = 50
@@ -53,9 +57,6 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 		
 		switch sender.state {
 		case .began:
-			print("Your touch start position is \(location)")
-			print("Start location is \(boxLocation)")
-			
 			animator.removeAllBehaviors()
 			
 //			let centerOffset = UIOffset(horizontal: boxLocation.x - myButton.bounds.midX, vertical: boxLocation.y - myButton.bounds.midY)
@@ -144,11 +145,14 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             sender.title = "Edit"
             addButton.isHidden = false
             shake = false
+			panGesture.isEnabled = false
         }
         else if sender.title == "Edit" {
             sender.title = "Done"
-        }
-        //TODO
+		} else {
+			//TODO
+			sender.title = "Done"
+		}
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -248,6 +252,7 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             button.layer.add(frame, forKey: nil)
         }
         shake = true
+		panGesture.isEnabled = true
         addButton.isHidden = true;
         barButton.title = "Done"
 	}
@@ -274,12 +279,11 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             usrButton.layer.backgroundColor = UIColor.gray.cgColor
             //		usrButton.showsTouchWhenHighlighted = true
             usrButton.addTarget(self, action: #selector(DetailViewController.changeContact(_:)), for: UIControlEvents.touchUpInside)
-            
-            let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(DetailViewController.longTap(_:)))
-            usrButton.addGestureRecognizer(longGesture)
 			
-			let panGesture = UIPanGestureRecognizer(target: self, action: #selector(DetailViewController.handleAttachmentGesture(_:)))
+			let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(DetailViewController.longTap(_:)))
+            usrButton.addGestureRecognizer(longGesture)
 			usrButton.addGestureRecognizer(panGesture)
+			panGesture.isEnabled = false
 			
             usrButton.setTitle(name, for: UIControlState.normal)
             start += width + sep
@@ -308,6 +312,7 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         shake = false
         barButton.title = "Edit"
         addButton.isHidden = false
+		panGesture.isEnabled = false
     }
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -361,6 +366,7 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
     
     override func viewDidAppear(_ animated: Bool) {
         shake = false
+		panGesture.isEnabled = false
         barButton.title = "Edit"
         addButton.isHidden = false
     }
