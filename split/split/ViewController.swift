@@ -23,12 +23,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             picker.sourceType = .camera
             picker.allowsEditing = true
             
-            let screenSize: CGRect = UIScreen.main.bounds
-            let cameraAspectRatio = 4.0 / 3.0
-            let imageWidth = screenSize.width * CGFloat(cameraAspectRatio)
-            let scale = screenSize.height / CGFloat(imageWidth)
-            picker.cameraViewTransform = CGAffineTransform(scaleX: scale, y: scale)
-            
             self.present(picker, animated: true, completion: nil)
         }
         else {
@@ -42,6 +36,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             picker.delegate = self
             picker.sourceType = .photoLibrary
             picker.allowsEditing = false
+			
             self.present(picker, animated: true, completion: nil)
         }
         else {
