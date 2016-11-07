@@ -23,19 +23,24 @@ class Recognition: NSObject, G8TesseractDelegate {
 				var fullNameArr  = line.components(separatedBy: " ")
 				if fullNameArr[fullNameArr.count - 1] == "T" || fullNameArr[fullNameArr.count - 1] == "F" {
 					
-					
-					let price = fullNameArr[fullNameArr.count - 2]
-//					var price = ""
-//					print(line)
-//					for char in line.characters.reversed() {
-//						if (char >= "0" && char <= "9") {
-//							price = "\(char)" + price
-//						}
-//						if char == "." {
-//							price = "." + price
-//							break
-//						}
-//					}
+//					let price = fullNameArr[fullNameArr.count - 2]
+					var price = ""
+					print(line)
+					let charArr = Array(line.characters)
+					var flag = false
+					for i in (0...charArr.count - 1).reversed() {
+						let char = charArr[i]
+						if (char >= "0" && char <= "9") {
+							price = "\(char)" + price
+						}
+						if char == "." {
+							price = "." + price
+							flag = true
+						}
+						if char == " " && flag {
+							break;
+						}
+					}
 					
 					
 					fullNameArr.remove(at: fullNameArr.count - 1)
