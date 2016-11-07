@@ -88,7 +88,10 @@
                                                 <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MYt-f8-gaE">
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="18"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="gEb-q6-Vhn" id="KDG-GA-ICa"/>
+                                                    </connections>
                                                 </textField>
                                                 <textField opaque="NO" clipsSubviews="YES" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Vyd-xe-4Zr">
                                                     <constraints>
@@ -96,17 +99,20 @@
                                                     </constraints>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="18"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                                    <connections>
+                                                        <outlet property="delegate" destination="gEb-q6-Vhn" id="on8-Nc-OKH"/>
+                                                    </connections>
                                                 </textField>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="Vyd-xe-4Zr" firstAttribute="leading" secondItem="MYt-f8-gaE" secondAttribute="trailing" constant="8" symbolic="YES" id="7qR-Lc-oVG"/>
-                                                <constraint firstItem="Vyd-xe-4Zr" firstAttribute="top" secondItem="VPn-no-IjB" secondAttribute="top" constant="20" symbolic="YES" id="BPl-vv-Dm0"/>
-                                                <constraint firstAttribute="bottom" secondItem="Vyd-xe-4Zr" secondAttribute="bottom" constant="20" symbolic="YES" id="F2w-Aw-C5j"/>
-                                                <constraint firstAttribute="bottom" secondItem="MYt-f8-gaE" secondAttribute="bottom" constant="20" symbolic="YES" id="LEc-gm-hA4"/>
+                                                <constraint firstItem="Vyd-xe-4Zr" firstAttribute="top" secondItem="VPn-no-IjB" secondAttribute="top" constant="6" id="BPl-vv-Dm0"/>
+                                                <constraint firstAttribute="bottom" secondItem="Vyd-xe-4Zr" secondAttribute="bottom" constant="6" id="F2w-Aw-C5j"/>
+                                                <constraint firstAttribute="bottom" secondItem="MYt-f8-gaE" secondAttribute="bottom" constant="6" id="LEc-gm-hA4"/>
                                                 <constraint firstAttribute="trailing" secondItem="Vyd-xe-4Zr" secondAttribute="trailing" constant="20" symbolic="YES" id="hS5-Qr-90c"/>
                                                 <constraint firstItem="MYt-f8-gaE" firstAttribute="leading" secondItem="VPn-no-IjB" secondAttribute="leading" constant="20" symbolic="YES" id="joI-aI-EEk"/>
-                                                <constraint firstItem="MYt-f8-gaE" firstAttribute="top" secondItem="VPn-no-IjB" secondAttribute="top" constant="20" symbolic="YES" id="qNz-yh-gff"/>
+                                                <constraint firstItem="MYt-f8-gaE" firstAttribute="top" secondItem="VPn-no-IjB" secondAttribute="top" constant="6" id="qNz-yh-gff"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -132,23 +138,42 @@
                             </label>
                             <button opaque="NO" alpha="0.90000000000000002" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qev-fX-8bM">
                                 <color key="backgroundColor" red="0.1529411765" green="0.30588235289999999" blue="0.75294117650000003" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="20"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="18"/>
                                 <color key="tintColor" red="0.93725490570000003" green="0.93725490570000003" blue="0.95686274770000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="Clear All"/>
+                                <connections>
+                                    <action selector="clearAllItems:" destination="gEb-q6-Vhn" eventType="touchUpInside" id="MkQ-M0-yaM"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" alpha="0.90000000000000002" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2pV-Sf-jCJ">
+                                <color key="backgroundColor" red="0.1529411765" green="0.30588235289999999" blue="0.75294117650000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="QMd-qj-9jj"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="18"/>
+                                <color key="tintColor" red="0.93725490570000003" green="0.93725490570000003" blue="0.95686274770000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Send Emails"/>
+                                <connections>
+                                    <action selector="sendEmailButtonTapped:" destination="gEb-q6-Vhn" eventType="touchUpInside" id="QVk-f4-MWS"/>
+                                </connections>
                             </button>
                             <button opaque="NO" alpha="0.90000000000000002" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KxK-iK-ZIu">
                                 <color key="backgroundColor" red="0.1529411765" green="0.30588235289999999" blue="0.75294117650000003" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="20"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="18"/>
                                 <color key="tintColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <state key="normal" title="Select All"/>
+                                <connections>
+                                    <action selector="selectAllItems:" destination="gEb-q6-Vhn" eventType="touchUpInside" id="u1s-8g-M6q"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="BC3-1o-7Nr" firstAttribute="top" secondItem="KxK-iK-ZIu" secondAttribute="bottom" constant="8" symbolic="YES" id="0Pv-aY-EqX"/>
-                            <constraint firstItem="lI5-Sc-oh5" firstAttribute="top" secondItem="w5x-HB-fAp" secondAttribute="bottom" constant="8" id="5an-oN-cyc"/>
+                            <constraint firstItem="lI5-Sc-oh5" firstAttribute="top" secondItem="w5x-HB-fAp" secondAttribute="bottom" constant="8" symbolic="YES" id="5an-oN-cyc"/>
                             <constraint firstAttribute="trailing" secondItem="w5x-HB-fAp" secondAttribute="trailing" constant="20" symbolic="YES" id="7oq-5G-g5s"/>
-                            <constraint firstItem="w5x-HB-fAp" firstAttribute="top" secondItem="BC3-1o-7Nr" secondAttribute="bottom" constant="8" id="8WE-vb-NU1"/>
+                            <constraint firstItem="w5x-HB-fAp" firstAttribute="top" secondItem="BC3-1o-7Nr" secondAttribute="bottom" constant="8" symbolic="YES" id="8WE-vb-NU1"/>
+                            <constraint firstItem="lI5-Sc-oh5" firstAttribute="top" secondItem="2pV-Sf-jCJ" secondAttribute="bottom" constant="8" symbolic="YES" id="9XW-x3-Cfk"/>
                             <constraint firstItem="BC3-1o-7Nr" firstAttribute="leading" secondItem="Kgu-YZ-DtX" secondAttribute="leading" id="A7n-Dt-yaU"/>
                             <constraint firstAttribute="trailing" secondItem="lI5-Sc-oh5" secondAttribute="trailing" id="FfT-Hr-dtP"/>
                             <constraint firstItem="Qev-fX-8bM" firstAttribute="top" secondItem="NaU-Kp-s4X" secondAttribute="bottom" constant="8" symbolic="YES" id="HWU-8c-wVV"/>
@@ -159,10 +184,12 @@
                             <constraint firstItem="3RX-8K-kvy" firstAttribute="top" secondItem="lI5-Sc-oh5" secondAttribute="bottom" id="YtV-Ab-sri"/>
                             <constraint firstItem="BC3-1o-7Nr" firstAttribute="top" secondItem="Qev-fX-8bM" secondAttribute="bottom" constant="8" symbolic="YES" id="aCf-Ae-2Ee"/>
                             <constraint firstAttribute="trailing" secondItem="BC3-1o-7Nr" secondAttribute="trailing" id="cft-80-pcU"/>
+                            <constraint firstItem="w5x-HB-fAp" firstAttribute="leading" secondItem="2pV-Sf-jCJ" secondAttribute="trailing" constant="8" symbolic="YES" id="dWK-hg-Af7"/>
                             <constraint firstAttribute="trailing" secondItem="Qev-fX-8bM" secondAttribute="trailing" constant="20" symbolic="YES" id="eOp-nk-chw"/>
                             <constraint firstItem="lI5-Sc-oh5" firstAttribute="leading" secondItem="Kgu-YZ-DtX" secondAttribute="leading" id="lGA-Qi-z4W"/>
                             <constraint firstItem="KxK-iK-ZIu" firstAttribute="top" secondItem="NaU-Kp-s4X" secondAttribute="bottom" constant="8" symbolic="YES" id="lKn-x9-mO0"/>
-                            <constraint firstItem="w5x-HB-fAp" firstAttribute="leading" secondItem="Kgu-YZ-DtX" secondAttribute="leading" constant="20" symbolic="YES" id="qhL-fc-qnN"/>
+                            <constraint firstItem="2pV-Sf-jCJ" firstAttribute="top" secondItem="BC3-1o-7Nr" secondAttribute="bottom" constant="8" symbolic="YES" id="vzt-z0-jwB"/>
+                            <constraint firstItem="2pV-Sf-jCJ" firstAttribute="leading" secondItem="Kgu-YZ-DtX" secondAttribute="leadingMargin" constant="4" id="w4w-cS-7mw"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
@@ -175,8 +202,9 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="barButton" destination="Zqn-lr-Z2U" id="Kfb-Rh-dAE"/>
+                        <outlet property="editBarButtonItem" destination="Zqn-lr-Z2U" id="ZFh-hC-UQI"/>
                         <outlet property="scrollView" destination="lI5-Sc-oh5" id="HRU-9i-nOx"/>
+                        <outlet property="sendEmailButton" destination="2pV-Sf-jCJ" id="eyn-eR-Fax"/>
                         <outlet property="tableView" destination="BC3-1o-7Nr" id="Cgx-2Q-7Pv"/>
                         <outlet property="totalLabel" destination="w5x-HB-fAp" id="xxE-hz-rHV"/>
                         <segue destination="8gV-ac-PNq" kind="show" identifier="ToAddContact" id="CdW-cr-BFl"/>
@@ -214,7 +242,7 @@
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PoO-fF-pcv">
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="acv-RC-jzW"/>
+                                    <constraint firstAttribute="width" constant="80" id="acv-RC-jzW"/>
                                     <constraint firstAttribute="height" constant="25" id="ryi-Kd-TgV"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="20"/>
@@ -223,7 +251,7 @@
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mobile" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qHa-rX-GkI">
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="Tt1-2t-bXG"/>
+                                    <constraint firstAttribute="width" constant="80" id="Tt1-2t-bXG"/>
                                     <constraint firstAttribute="height" constant="25" id="j0d-uF-MmC"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="20"/>
@@ -232,7 +260,7 @@
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="78b-22-3hV">
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="aMJ-W7-Nbs"/>
+                                    <constraint firstAttribute="width" constant="80" id="aMJ-W7-Nbs"/>
                                     <constraint firstAttribute="height" constant="25" id="yT1-vi-cPw"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="20"/>
@@ -241,27 +269,27 @@
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="fR5-hm-upT">
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="32" id="ySD-ni-StW"/>
+                                    <constraint firstAttribute="height" constant="40" id="ySD-ni-StW"/>
                                 </constraints>
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done"/>
                                 <connections>
                                     <outlet property="delegate" destination="8gV-ac-PNq" id="nVO-jq-U0x"/>
                                 </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="mFM-Fh-dyT">
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
                                 <connections>
                                     <outlet property="delegate" destination="8gV-ac-PNq" id="jv8-ZY-hkW"/>
                                 </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="0is-0f-Aby">
                                 <nil key="textColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                <fontDescription key="fontDescription" name="TrebuchetMS" family="Trebuchet MS" pointSize="17"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done"/>
                                 <connections>
                                     <outlet property="delegate" destination="8gV-ac-PNq" id="jBN-ik-jeH"/>
                                 </connections>
@@ -281,7 +309,7 @@
                             <constraint firstItem="0is-0f-Aby" firstAttribute="trailing" secondItem="mFM-Fh-dyT" secondAttribute="trailing" id="VrD-vc-IIJ"/>
                             <constraint firstItem="mFM-Fh-dyT" firstAttribute="centerY" secondItem="qHa-rX-GkI" secondAttribute="centerY" id="dYa-on-Avu"/>
                             <constraint firstItem="qHa-rX-GkI" firstAttribute="top" secondItem="PoO-fF-pcv" secondAttribute="bottom" constant="50" id="eMO-aJ-QGx"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="fR5-hm-upT" secondAttribute="trailing" constant="38" id="fpf-16-hrr"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="fR5-hm-upT" secondAttribute="trailing" constant="20" id="fpf-16-hrr"/>
                             <constraint firstItem="dsp-wL-Gjc" firstAttribute="centerX" secondItem="vCL-17-bjK" secondAttribute="centerX" id="hMP-vI-2qU"/>
                             <constraint firstItem="mFM-Fh-dyT" firstAttribute="trailing" secondItem="fR5-hm-upT" secondAttribute="trailing" id="jN8-8J-Y0a"/>
                             <constraint firstItem="mFM-Fh-dyT" firstAttribute="leading" secondItem="qHa-rX-GkI" secondAttribute="trailing" constant="20" id="mfa-EM-Ulg"/>
