@@ -11,7 +11,7 @@ import UIKit
 let ThrowingThreshold: CGFloat = 1000
 let ThrowingVelocityPadding: CGFloat = 35
 
-class DetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, DataEnteredDelegate {
+class DetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, DataEnteredDelegate {
 	
     @IBOutlet weak var barButton: UIBarButtonItem!
 	@IBOutlet weak var totalLabel: UILabel!
@@ -50,7 +50,7 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 	fileprivate var itemBehavior: UIDynamicItemBehavior!
 	
 	func handleAttachmentGesture(_ sender: UIPanGestureRecognizer) {
-		if(shake) {
+		if (shake) {
 		let location = sender.location(in: self.view)
 		let myButton = sender.view!
 		let boxLocation = sender.location(in: myButton)
@@ -161,9 +161,9 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let row = indexPath.row
-        let cell = tableView.dequeueReusableCell(withIdentifier: "tableCell", for: indexPath as IndexPath)
-        let item : UILabel = self.view.viewWithTag(1) as! UILabel;
-        let price : UILabel = self.view.viewWithTag(2) as! UILabel;
+        let cell = tableView.dequeueReusableCell(withIdentifier: "tableCell", for: indexPath) as! CustomTableViewCell
+        let item : UITextField = cell.itemTextField;
+        let price : UITextField = cell.priceTextField;
         item.text = array[row]["name"]
         price.text = "$" + array[row]["price"]!
 		if (curHighlightButton != nil && itemArray[indexPath.row].contains(curHighlightButton!)) {
@@ -345,6 +345,8 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 		self.title = "Bill Details"
         self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil);
 		
+        tableView!.estimatedRowHeight = 50.0
+        tableView!.rowHeight = UITableViewAutomaticDimension
 		// Do any additional setup after loading the view.
 		// containerView.backgroundColor = UIColor.yellow
 		itemArray = Array(repeating: Set<UIButton>(), count: array.count)
