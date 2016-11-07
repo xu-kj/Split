@@ -35,7 +35,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             let picker = UIImagePickerController()
             picker.delegate = self
             picker.sourceType = .photoLibrary
-            picker.allowsEditing = false
+            picker.allowsEditing = true
 			
             self.present(picker, animated: true, completion: nil)
         }
@@ -45,12 +45,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func alertNoDevice(deviceName: String){
-        let alertVC = UIAlertController(title: "Sorry!",
-                                        message: "Cannot access " + deviceName,
-                                        preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK",
-                                     style:.default,
-                                     handler: nil)
+        let alertVC = UIAlertController(
+			title: "Sorry!",
+			message: "Cannot access " + deviceName,
+			preferredStyle: .alert)
+        let okAction = UIAlertAction(
+			title: "OK",
+			style:.default,
+			handler: nil)
         alertVC.addAction(okAction)
         present(alertVC, animated: true, completion: nil)
     }
