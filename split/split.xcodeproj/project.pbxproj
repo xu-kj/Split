@@ -259,7 +259,7 @@
 				TargetAttributes = {
 					9693F9EE1D9E1B3200E7BFF7 = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = Y22ZUEX5TV;
+						DevelopmentTeam = FCBPS5FG3N;
 						ProvisioningStyle = Automatic;
 					};
 					9693FA021D9E1B3200E7BFF7 = {
@@ -617,12 +617,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = Y22ZUEX5TV;
+				DEVELOPMENT_TEAM = FCBPS5FG3N;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = split/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.haha.split;
+				PRODUCT_BUNDLE_IDENTIFIER = com.panorama.split;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -635,12 +635,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = Y22ZUEX5TV;
+				DEVELOPMENT_TEAM = FCBPS5FG3N;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = split/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.haha.split;
+				PRODUCT_BUNDLE_IDENTIFIER = com.panorama.split;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
