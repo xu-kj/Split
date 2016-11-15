@@ -19,7 +19,8 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 	@IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var editBarButtonItem: UIBarButtonItem!
     @IBOutlet weak var sendEmailButton: UIButton!
-    
+	
+	
 	let panGesture = UIPanGestureRecognizer(target: self, action: #selector(DetailViewController.handleAttachmentGesture(_:)))
 //	let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(DetailViewController.longTap(_:)))
 	
@@ -37,13 +38,11 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 	let addButton = UIButton()
     var array: Array<Dictionary<String, String> > = []
 	
-//	var totalDict:Dictionary<UIButton, Double> = [:]
 	var itemArray: Array<Set<UIButton> > = []
 	var buttonArray: Array<UIButton> = []
 	var curHighlightButton: UIButton? = nil
     var contactArray: Array<Dictionary<String, String> > = []
 	var curSum: Double = 0.0
-//  var shake: Bool = false;
     
 	
 	fileprivate var animator: UIDynamicAnimator!
@@ -51,21 +50,22 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 	fileprivate var pushBehavior: UIPushBehavior!
 	fileprivate var itemBehavior: UIDynamicItemBehavior!
 	
+	func textFieldDidEndEditing(_ textField: UITextField) {
+		let i = textField.tag
+		if i % 2 == 1 {
+			array[i / 2]["name"] = textField.text
+		}
+		else {
+			var str:String = textField.text!
+			str.remove(at: str.startIndex)
+			array[i / 2 - 1]["price"] = str
+		}
+	}
+	
     @IBAction func barButtonTapped(_ sender: UIBarButtonItem) {
         if sender.title == "Done" {
             for button in buttonArray {
                 button.layer.removeAllAnimations()
-            }
-            for i in 1...array.count * 2 {
-                let textField = self.view.viewWithTag(i) as? UITextField
-                if i % 2 == 1 {
-                    array[i / 2]["name"] = textField?.text
-                }
-                else {
-                    var str:String = textField!.text!
-                    str.remove(at: str.startIndex)
-                    array[i / 2 - 1]["price"] = str
-                }
             }
             sender.title = "Edit"
             addButton.isHidden = false
@@ -240,6 +240,7 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         price.tag = 2 * row + 2
         price.keyboardType = UIKeyboardType.decimalPad
         if (editBarButtonItem.title == "Edit") {
+			
             item.isUserInteractionEnabled = false
             price.isUserInteractionEnabled = false
             item.borderStyle = UITextBorderStyle.none
