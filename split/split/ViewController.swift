@@ -65,6 +65,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         print("didFinishPickingImage")
 		
 		
+		
 		messageFrame = UIView(frame: CGRect(x: self.view.frame.midX - spinner_width/2, y: self.view.frame.midY - spinner_width/2, width: spinner_width, height: spinner_width))
 		messageFrame.layer.cornerRadius = 15
 		messageFrame.backgroundColor = UIColor(white: 0.8, alpha: 0.9)

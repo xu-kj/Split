@@ -41,7 +41,7 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 	var itemArray: Array<Set<UIButton> > = []
 	var buttonArray: Array<UIButton> = []
 	var curHighlightButton: UIButton? = nil
-    var contactArray: Array<Dictionary<String, String> > = []
+	var contactArray: Array<Dictionary<String, String> > = []
 	var curSum: Double = 0.0
     
 	
@@ -235,10 +235,13 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 		let row = indexPath.row
         let cell = tableView.dequeueReusableCell(withIdentifier: "tableCell", for: indexPath) as! CustomTableViewCell
         let item : UITextField = cell.itemTextField
+		item.autocorrectionType = .no
         let price : UITextField = cell.priceTextField
         item.tag = 2 * row + 1
         price.tag = 2 * row + 2
         price.keyboardType = UIKeyboardType.decimalPad
+		price.inputAccessoryView = UIToolbar()
+		
         if (editBarButtonItem.title == "Edit") {
 			
             item.isUserInteractionEnabled = false
