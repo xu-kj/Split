@@ -80,7 +80,8 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     @IBAction func selectAllItems(_ sender: UIButton) {
-        for i in 0...array.count - 1 {
+		curSum = 0.0
+        for i in 0..<array.count {
             let indexPath = NSIndexPath(row:i, section:0)
             tableView.selectRow(at: indexPath as IndexPath, animated: false, scrollPosition: UITableViewScrollPosition.none)
             self.tableView(tableView, didSelectRowAt: indexPath as IndexPath)
@@ -88,7 +89,7 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     @IBAction func clearAllItems(_ sender: UIButton) {
-        for i in 0...array.count - 1 {
+        for i in 0..<array.count {
             let indexPath = NSIndexPath(row:i, section:0)
             tableView.deselectRow(at: indexPath as IndexPath, animated: false)
             self.tableView(tableView, didDeselectRowAt: indexPath as IndexPath)
