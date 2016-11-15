@@ -13,7 +13,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var cameraButton: UIButton!
     @IBOutlet weak var albumButton: UIButton!
     @IBOutlet weak var editButton: UIButton!
-    
+	
+	let spinner_width:CGFloat = 60.0
+	var spinner:UIActivityIndicatorView! = nil
+	var messageFrame:UIView! = nil
+	
     var array: Array<Dictionary<String, String>> = []
     
     @IBAction func cameraButtonPressed(_ sender: AnyObject) {
@@ -59,9 +63,27 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         print("didFinishPickingImage")
-        array = Recognition().parse(image: image)
-        picker.dismiss(animated: false, completion: nil)
-        self.performSegue(withIdentifier: "ToTable", sender: self)
+		
+		
+		messageFrame = UIView(frame: CGRect(x: self.view.frame.midX - spinner_width/2, y: self.view.frame.midY - spinner_width/2, width: spinner_width, height: spinner_width))
+		messageFrame.layer.cornerRadius = 15
+		messageFrame.backgroundColor = UIColor(white: 0.8, alpha: 0.9)
+		
+		spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+		spinner.frame = CGRect(x: 0, y: 0, width: spinner_width, height: spinner_width)
+		picker.view.addSubview(messageFrame)
+		messageFrame.addSubview(spinner)
+		
+		spinner.startAnimating()
+		
+		DispatchQueue.global().async {
+			self.array = Recognition().parse(image: image)
+			DispatchQueue.main.async {
+				self.spinner.stopAnimating()
+				picker.dismiss(animated: false, completion: nil)
+				self.performSegue(withIdentifier: "ToTable", sender: self)
+			}
+		}
     }
     
     override func viewDidLoad() {
