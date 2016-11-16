@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import MGSwipeTableCell
 
-class CustomTableViewCell: UITableViewCell {
+class CustomTableViewCell: MGSwipeTableCell {
     @IBOutlet weak var itemTextField: UITextField!
     
     @IBOutlet weak var priceTextField: UITextField!

@@ -1,12 +1,21 @@
 PODS:
+  - IQKeyboardManagerSwift (4.0.7)
+  - MGSwipeTableCell (1.5.6)
+  - OpenCV (3.1.0.1)
   - TesseractOCRiOS (4.0.0)
 
 DEPENDENCIES:
+  - IQKeyboardManagerSwift
+  - MGSwipeTableCell
+  - OpenCV
   - TesseractOCRiOS
 
 SPEC CHECKSUMS:
+  IQKeyboardManagerSwift: 58bbcf46b5cf9fd4ed625d28a60cb2fbae4ab0f4
+  MGSwipeTableCell: 616700eb0ffd1c611ba909066cb7fd739790a0a7
+  OpenCV: 41c4250e2b06a394d6fbb634b5fa622cdd846018
   TesseractOCRiOS: 90638afbe43d082433f2e76b384c7901d23956df
 
-PODFILE CHECKSUM: dada0b6ae05faac67d0bdcec8160f71c8fcd803a
+PODFILE CHECKSUM: 33cffa6a38bfdf6703d2c29e95d14ccfaf73f795
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.1.1

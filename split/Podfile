@@ -6,6 +6,9 @@ target 'split' do
   use_frameworks!
 
   # Pods for split
+  pod 'MGSwipeTableCell'
+  pod 'IQKeyboardManagerSwift'
+  pod 'OpenCV'
   pod 'TesseractOCRiOS'
 
   post_install do |installer|

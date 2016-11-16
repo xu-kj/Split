@@ -8,11 +8,12 @@
 
 import UIKit
 import MessageUI
+import MGSwipeTableCell
 
 let ThrowingThreshold: CGFloat = 1000
 let ThrowingVelocityPadding: CGFloat = 35
 
-class DetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, MFMailComposeViewControllerDelegate, DataEnteredDelegate {
+class DetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, MFMailComposeViewControllerDelegate, DataEnteredDelegate, MGSwipeTableCellDelegate {
 	
 	@IBOutlet weak var totalLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
@@ -234,6 +235,17 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let row = indexPath.row
         let cell = tableView.dequeueReusableCell(withIdentifier: "tableCell", for: indexPath) as! CustomTableViewCell
+		
+		cell.rightButtons = [MGSwipeButton(title: "Delete", backgroundColor: UIColor.red, callback: {
+			(sender: MGSwipeTableCell!) -> Bool in
+			print("Convenience callback for swipe buttons!")
+			self.array.remove(at: (tableView.indexPath(for: sender)!).row)
+			tableView.deleteRows(at: [tableView.indexPath(for: sender)!], with: .left)
+			return true
+		})]
+		
+		cell.rightSwipeSettings.transition = MGSwipeTransition.border
+		
         let item : UITextField = cell.itemTextField
 		item.autocorrectionType = .no
         let price : UITextField = cell.priceTextField
@@ -310,23 +322,59 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         }
 	}
 	
+	func swipeTableCell(_ cell: MGSwipeTableCell, canSwipe direction: MGSwipeDirection) -> Bool {
+		if direction == MGSwipeDirection.rightToLeft {
+			return true
+		}
+		return false
+	}
+	
+	
+//	func swipeTableCell(_ cell: MGSwipeTableCell, swipeButtonsFor direction: MGSwipeDirection, swipeSettings: MGSwipeSettings, expansionSettings: MGSwipeExpansionSettings) -> [UIView]? {
+//		
+//		swipeSettings.transition = MGSwipeTransition.border;
+//		expansionSettings.buttonIndex = 0;
+//		
+//		
+//		let mail = mailForIndexPath(tableView.indexPath(for: cell)!)
+//		
+//		if direction == MGSwipeDirection.rightToLeft {
+//			expansionSettings.fillOnTrigger = true;
+//			expansionSettings.threshold = 1.1;
+//			let padding = 15;
+//			let color1 = UIColor.init(red:1.0, green:59/255.0, blue:50/255.0, alpha:1.0);
+//			let color2 = UIColor.init(red:1.0, green:149/255.0, blue:0.05, alpha:1.0);
+//			let color3 = UIColor.init(red:200/255.0, green:200/255.0, blue:205/255.0, alpha:1.0);
+//			
+//			let trash = MGSwipeButton(title: "Trash", backgroundColor: color1, padding: padding, callback: { (cell) -> Bool in
+//				self.deleteMail(self.tableView.indexPath(for: cell)!);
+//				return false; //don't autohide to improve delete animation
+//			});
+//			
+//			
+//			return [trash, flag, more];
+//		}
+//		
+//	}
+	
+	
     func shakeButton() {
         let frame = CAKeyframeAnimation(keyPath: "transform.rotation")
         let left = CGFloat(-M_PI_2*0.20)
         let right = CGFloat(M_PI_2*0.20)
-        
-        
+		
+		
         frame.values = [left, right, left];
         frame.duration = 0.2;
         frame.repeatCount = Float.infinity;
-        
+		
         for button in buttonArray {
             button.layer.add(frame, forKey: nil)
         }
         // panGesture.isEnabled = true
         addButton.isHidden = true
     }
-    
+	
 	func deleteContact(_ sender: UIButton) {
 		print("contact to be deleted")
 	}
