@@ -7,20 +7,17 @@
 //
 
 import UIKit
-import MessageUI
 import MGSwipeTableCell
 
 let ThrowingThreshold: CGFloat = 1000
 let ThrowingVelocityPadding: CGFloat = 35
 
-class DetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, MFMailComposeViewControllerDelegate, DataEnteredDelegate, MGSwipeTableCellDelegate {
+class DetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, DataEnteredDelegate, MGSwipeTableCellDelegate {
 	
 	@IBOutlet weak var totalLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
 	@IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var editBarButtonItem: UIBarButtonItem!
-    @IBOutlet weak var sendEmailButton: UIButton!
-	
 	
 	let panGesture = UIPanGestureRecognizer(target: self, action: #selector(DetailViewController.handleAttachmentGesture(_:)))
 //	let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(DetailViewController.longTap(_:)))
@@ -96,7 +93,7 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             self.tableView(tableView, didDeselectRowAt: indexPath as IndexPath)
         }
     }
-    
+    /*
     @IBAction func sendEmailButtonTapped(_ sender: AnyObject) {
         if (MFMailComposeViewController.canSendMail()) {
             let mail = MFMailComposeViewController()
@@ -135,11 +132,46 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             mail.setMessageBody(messageBody, isHTML: false)
             self.present(mail, animated: true, completion: nil)
         }
+        if (MFMessageComposeViewController.canSendText()) {
+            let message = MFMessageComposeViewController()
+            message.messageComposeDelegate = self
+            
+            var itemDict:Dictionary<String, Array<String>> = [:]
+            var totalDict:Dictionary<String, Double> = [:]
+            
+            var toRecipients:Array<String> = []
+            for contact in contactArray {
+                // name cannot be the same
+                itemDict[contact["name"]!] = []
+                totalDict[contact["name"]!] = 0
+                if contact["mobile"] != "" {
+                    toRecipients.append(contact["mobile"]!)
+                }
+            }
+            message.recipients = toRecipients
+            message.title = "Split!: splitting details"
+            message.subject = "Split!: splitting details"
+            
+            var messageBody:String = "Splitting details:\n\n"
+            for i in 0..<itemArray.count {
+                let set = itemArray[i]
+                for button in set {
+                    itemDict[button.title(for: UIControlState.normal)!]?.append("$" + array[i]["price"]! + "   " + array[i]["name"]!)
+                    let val = (array[i]["price"]! as NSString).doubleValue / Double(set.count)
+                    totalDict[button.title(for: UIControlState.normal)!]? += val
+                }
+            }
+            for contact in itemDict {
+                messageBody.append(contact.key + "'s items:\n")
+                messageBody.append(contact.value.joined(separator: "\n"))
+                messageBody.append("\n")
+                messageBody.append(String(format:"Total: $%.2f\n\n", totalDict[contact.key]!))
+            }
+            message.body = messageBody
+            self.present(message, animated: true, completion: nil)
+        }
     }
-    
-    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
-        controller.dismiss(animated: true, completion: nil)
-    }
+ */
     
     func handleAttachmentGesture(_ sender: UIPanGestureRecognizer) {
         if (editBarButtonItem.title == "Done") {
@@ -477,21 +509,6 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 		panGesture.isEnabled = false
     }
 	
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		if (segue.identifier == "ToAddContact") {
-			let svc = segue.destination as! AddContactViewController
-			svc.delegate = self
-			let button = sender as! UIButton
-			if button != addButton {
-				editedIndex = buttonArray.index(of: button)!
-				let dict: Dictionary<String, String> = contactArray[editedIndex]
-				svc.name = dict["name"]
-				svc.mobile = dict["mobile"]
-				svc.email = dict["email"]
-			}
-		}
-	}
-	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -513,9 +530,11 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 		// containerView.backgroundColor = UIColor.yellow
 		itemArray = Array(repeating: Set<UIButton>(), count: array.count)
 		scrollView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.2)
-		
-        // let font = UIFont(name: "TrebuchetMS", size:15)
-        // editBarButtonItem.setTitleTextAttributes([NSFontAttributeName: font], for: UIControlState.normal)
+        
+        editBarButtonItem.setTitleTextAttributes([
+            NSFontAttributeName : UIFont(name: "TrebuchetMS", size:18)!,
+            NSForegroundColorAttributeName : UIColor.white,NSBackgroundColorAttributeName:UIColor.black],
+                                                 for: UIControlState.normal)
         
 		addButton.frame = CGRect(x: start, y: margin, width: width, height: height)
 		let cameraImage = UIImage(named:"assets/add.png")?.withRenderingMode(.automatic)
@@ -528,6 +547,17 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 		self.scrollView.contentSize = CGSize(width: start + width + sep, height: 70)
 		self.automaticallyAdjustsScrollViewInsets = false
 		scrollView.addSubview(containerView)
+        
+        let footerView = UIView(frame: CGRect(x:0, y:0, width:tableView.frame.size.width, height:35))
+        let myButton = UIButton()
+        myButton.frame = CGRect(x: self.view.frame.midX - 40, y: 0, width: 80, height: 35)
+        // loginButton.addTarget(self, action: "loginAction", forControlEvents: .TouchUpInside)
+        myButton.setTitle("Add", for: UIControlState.normal)
+        myButton.setTitleColor(UIColor(red: 39/255.0, green: 78/255.0, blue: 192/255.0, alpha: 0.7), for: UIControlState.normal)
+        myButton.layer.borderWidth = 2
+        myButton.layer.borderColor = UIColor(red: 39/255.0, green: 78/255.0, blue: 192/255.0, alpha: 0.7).cgColor
+        footerView.addSubview(myButton)
+        tableView.tableFooterView = footerView
 	}
     
     override func viewDidAppear(_ animated: Bool) {
@@ -543,4 +573,45 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
 	}
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "ToAddContact") {
+            let svc = segue.destination as! AddContactViewController
+            svc.delegate = self
+            let button = sender as! UIButton
+            if button != addButton {
+                editedIndex = buttonArray.index(of: button)!
+                let dict: Dictionary<String, String> = contactArray[editedIndex]
+                svc.name = dict["name"]
+                svc.mobile = dict["mobile"]
+                svc.email = dict["email"]
+            }
+        }
+        if (segue.identifier == "ToSummary") {
+            let svc = segue.destination as! SummaryViewController;
+            
+            var itemDict:Dictionary<String, Array<String>> = [:]
+            var priceDict:Dictionary<String, Array<String>> = [:]
+            var totalDict:Dictionary<String, Double> = [:]
+            for contact in contactArray {
+                // name cannot be the same
+                itemDict[contact["name"]!] = []
+                priceDict[contact["name"]!] = []
+                totalDict[contact["name"]!] = 0
+            }
+            for i in 0..<itemArray.count {
+                let set = itemArray[i]
+                for button in set {
+                    itemDict[button.title(for: UIControlState.normal)!]?.append(array[i]["name"]!)
+                    priceDict[button.title(for: UIControlState.normal)!]?.append("$" + array[i]["price"]!)
+                    let val = (array[i]["price"]! as NSString).doubleValue / Double(set.count)
+                    totalDict[button.title(for: UIControlState.normal)!]? += val
+                }
+            }
+            svc.itemDict = itemDict
+            svc.priceDict = priceDict
+            svc.totalDict = totalDict
+            svc.contactArray = self.contactArray
+        }
+    }
 }

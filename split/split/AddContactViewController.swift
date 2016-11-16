@@ -50,7 +50,7 @@ class AddContactViewController: UIViewController,  UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Add Person"
+        self.title = "Add Contact"
         self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         saveButton.layer.cornerRadius = 8
         nameTextField.keyboardType = UIKeyboardType.namePhonePad
