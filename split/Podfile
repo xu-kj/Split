@@ -8,7 +8,7 @@ target 'split' do
   # Pods for split
   pod 'MGSwipeTableCell'
   pod 'IQKeyboardManagerSwift'
-  pod 'OpenCV'
+  #pod 'OpenCV'
   pod 'TesseractOCRiOS'
 
   post_install do |installer|
