@@ -275,9 +275,17 @@
                                 </constraints>
                                 <items>
                                     <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="UsH-oP-UHN"/>
-                                    <barButtonItem title="Send Emails" id="jWS-hi-V6T"/>
+                                    <barButtonItem title="Send Emails" id="jWS-hi-V6T">
+                                        <connections>
+                                            <action selector="emailBarButtonItemTapped:" destination="dge-az-NuK" id="pTc-Kn-ZaM"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="ZRM-DO-9FO"/>
-                                    <barButtonItem title="Send Messages" id="dku-HI-hhq"/>
+                                    <barButtonItem title="Send Messages" id="dku-HI-hhq">
+                                        <connections>
+                                            <action selector="messageBarButtonItemTapped:" destination="dge-az-NuK" id="wod-rp-IpK"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="OeZ-8w-RtN"/>
                                 </items>
                             </toolbar>

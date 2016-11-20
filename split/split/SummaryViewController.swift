@@ -20,6 +20,69 @@ class SummaryViewController: UIViewController, UITableViewDataSource, UITableVie
     var totalDict:Dictionary<String, Double> = [:]
     var contactArray: Array<Dictionary<String, String> > = []
     
+    @IBAction func emailBarButtonItemTapped(_ sender: UIBarButtonItem) {
+        if (MFMailComposeViewController.canSendMail()) {
+            let mail = MFMailComposeViewController()
+            mail.mailComposeDelegate = self
+            
+            var toRecipients:Array<String> = []
+            for contact in contactArray {
+                // name cannot be the same
+                if contact["email"] != "" {
+                    toRecipients.append(contact["email"]!)
+                }
+            }
+            mail.setToRecipients(toRecipients)
+            mail.setSubject("Split!: splitting details")
+            
+            var messageBody:String = "Splitting details:\n\n"
+            for contact in itemDict {
+                messageBody.append(contact.key + "'s items:\n")
+                for i in 0..<contact.value.count {
+                    messageBody.append((priceDict[contact.key]?[i])!)
+                    messageBody.append("   ")
+                    messageBody.append(contact.value[i])
+                    messageBody.append("\n")
+                }
+                messageBody.append(String(format:"Subtotal: $%.2f\n\n", totalDict[contact.key]!))
+            }
+            mail.setMessageBody(messageBody, isHTML: false)
+            self.present(mail, animated: true, completion: nil)
+        }
+    }
+    
+    
+    @IBAction func messageBarButtonItemTapped(_ sender: UIBarButtonItem) {
+        if (MFMessageComposeViewController.canSendText()) {
+            let message = MFMessageComposeViewController()
+            message.messageComposeDelegate = self
+            
+            var toRecipients:Array<String> = []
+            for contact in contactArray {
+                // name cannot be the same
+                if contact["mobile"] != "" {
+                    toRecipients.append(contact["mobile"]!)
+                }
+            }
+            message.recipients = toRecipients
+            message.title = "Split!: splitting details"
+            
+            var messageBody:String = "Splitting details:\n\n"
+            for contact in itemDict {
+                messageBody.append(contact.key + "'s items:\n")
+                for i in 0..<contact.value.count {
+                    messageBody.append((priceDict[contact.key]?[i])!)
+                    messageBody.append("   ")
+                    messageBody.append(contact.value[i])
+                    messageBody.append("\n")
+                }
+                messageBody.append(String(format:"Subtotal: $%.2f\n\n", totalDict[contact.key]!))
+            }
+            message.body = messageBody
+            self.present(message, animated: true, completion: nil)
+        }
+    }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         print(contactArray.count)
         return contactArray.count

@@ -48,18 +48,6 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 	fileprivate var pushBehavior: UIPushBehavior!
 	fileprivate var itemBehavior: UIDynamicItemBehavior!
 	
-	func textFieldDidEndEditing(_ textField: UITextField) {
-		let i = textField.tag
-		if i % 2 == 1 {
-			array[i / 2]["name"] = textField.text
-		}
-		else {
-			var str:String = textField.text!
-			str.remove(at: str.startIndex)
-			array[i / 2 - 1]["price"] = str
-		}
-	}
-	
     @IBAction func barButtonTapped(_ sender: UIBarButtonItem) {
         if sender.title == "Done" {
             for button in buttonArray {
@@ -91,6 +79,18 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             let indexPath = NSIndexPath(row:i, section:0)
             tableView.deselectRow(at: indexPath as IndexPath, animated: false)
             self.tableView(tableView, didDeselectRowAt: indexPath as IndexPath)
+        }
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        let i = textField.tag
+        if i % 2 == 1 {
+            array[i / 2]["name"] = textField.text
+        }
+        else {
+            var str:String = textField.text!
+            str.remove(at: str.startIndex)
+            array[i / 2 - 1]["price"] = str
         }
     }
     /*
@@ -287,7 +287,6 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 		price.inputAccessoryView = UIToolbar()
 		
         if (editBarButtonItem.title == "Edit") {
-			
             item.isUserInteractionEnabled = false
             price.isUserInteractionEnabled = false
             item.borderStyle = UITextBorderStyle.none
@@ -561,9 +560,6 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 	}
     
     override func viewDidAppear(_ animated: Bool) {
-		//panGesture.isEnabled = false
-        //editBarButtonItem.title = "Edit"
-        //addButton.isHidden = false
         if editBarButtonItem.title == "Done" {
             shakeButton()
         }

@@ -26,7 +26,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             picker.delegate = self
             picker.sourceType = .camera
             picker.allowsEditing = true
-            
             self.present(picker, animated: true, completion: nil)
         }
         else {
@@ -63,8 +62,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         print("didFinishPickingImage")
-		
-		
+        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
 		
 		messageFrame = UIView(frame: CGRect(x: self.view.frame.midX - spinner_width/2, y: self.view.frame.midY - spinner_width/2, width: spinner_width, height: spinner_width))
 		messageFrame.layer.cornerRadius = 15
