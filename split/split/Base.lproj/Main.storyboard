@@ -49,7 +49,7 @@
                         <outlet property="albumButton" destination="iBP-2b-3rz" id="qFD-vx-yzv"/>
                         <outlet property="cameraButton" destination="Nfj-A2-knG" id="oDB-UL-OF5"/>
                         <outlet property="editButton" destination="qQK-hh-f0R" id="8F3-J1-3Ni"/>
-                        <segue destination="gEb-q6-Vhn" kind="show" identifier="ToTable" id="ROp-KL-hO2"/>
+                        <segue destination="5bC-2V-da2" kind="show" identifier="ToCrop" id="a2L-v8-EXo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -311,6 +311,73 @@
             </objects>
             <point key="canvasLocation" x="1204" y="1735.6821589205399"/>
         </scene>
+        <!--Crop View Controller-->
+        <scene sceneID="x1k-2o-ye1">
+            <objects>
+                <viewController id="5bC-2V-da2" customClass="CropViewController" customModule="split" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="9TC-nj-bGc"/>
+                        <viewControllerLayoutGuide type="bottom" id="QXV-Ad-SLI"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="TWn-CY-4wi">
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6vh-X2-7C2">
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="8cY-cw-oan"/>
+                                </constraints>
+                                <items>
+                                    <barButtonItem title="Cancel" id="LCY-1i-FtN">
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <action selector="cancelButtonTapped:" destination="5bC-2V-da2" id="Mjn-uy-fmM"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="gPI-Ww-Xbe"/>
+                                    <barButtonItem title="Choose" id="AZ4-TC-mIo">
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <action selector="chooseButtonTapped:" destination="5bC-2V-da2" id="Gbl-ve-j71"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                                <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </toolbar>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WUa-Cg-bnw">
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="B8k-7b-Xcf"/>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="B8k-7b-Xcf" firstAttribute="leading" secondItem="WUa-Cg-bnw" secondAttribute="leading" id="7pc-uq-LZw"/>
+                                    <constraint firstAttribute="bottom" secondItem="B8k-7b-Xcf" secondAttribute="bottom" constant="50" id="Pdt-ct-DU3"/>
+                                    <constraint firstAttribute="trailing" secondItem="B8k-7b-Xcf" secondAttribute="trailing" id="pU0-zt-2TV"/>
+                                    <constraint firstItem="B8k-7b-Xcf" firstAttribute="top" secondItem="WUa-Cg-bnw" secondAttribute="top" constant="50" id="uWI-u5-kfD"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="WUa-Cg-bnw" firstAttribute="leading" secondItem="TWn-CY-4wi" secondAttribute="leading" id="6D0-Lu-ueK"/>
+                            <constraint firstAttribute="trailing" secondItem="6vh-X2-7C2" secondAttribute="trailing" id="DpM-Dl-voR"/>
+                            <constraint firstItem="6vh-X2-7C2" firstAttribute="leading" secondItem="TWn-CY-4wi" secondAttribute="leading" id="Etf-fF-1eS"/>
+                            <constraint firstItem="QXV-Ad-SLI" firstAttribute="top" secondItem="6vh-X2-7C2" secondAttribute="bottom" id="R9t-zD-4ev"/>
+                            <constraint firstAttribute="trailing" secondItem="WUa-Cg-bnw" secondAttribute="trailing" id="XQ5-n0-jaA"/>
+                            <constraint firstItem="6vh-X2-7C2" firstAttribute="top" secondItem="WUa-Cg-bnw" secondAttribute="bottom" id="c9l-OD-Ada"/>
+                            <constraint firstItem="WUa-Cg-bnw" firstAttribute="top" secondItem="9TC-nj-bGc" secondAttribute="bottom" id="gKE-do-w7c"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="B8k-7b-Xcf" id="Voh-Ze-qoR"/>
+                        <outlet property="toolBar" destination="6vh-X2-7C2" id="Fki-Nf-Aud"/>
+                        <segue destination="gEb-q6-Vhn" kind="show" identifier="ToTable" id="ND5-xE-Nat"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gB4-lg-qyO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2221.5999999999999" y="37.331334332833585"/>
+        </scene>
         <!--Add Contact View Controller-->
         <scene sceneID="Dy2-7Z-kvT">
             <objects>
@@ -452,6 +519,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="ROp-KL-hO2"/>
+        <segue reference="ND5-xE-Nat"/>
     </inferredMetricsTieBreakers>
 </document>

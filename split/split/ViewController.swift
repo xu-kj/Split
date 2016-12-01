@@ -13,19 +13,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var cameraButton: UIButton!
     @IBOutlet weak var albumButton: UIButton!
     @IBOutlet weak var editButton: UIButton!
-	
-	let spinner_width:CGFloat = 60.0
-	var spinner:UIActivityIndicatorView! = nil
-	var messageFrame:UIView! = nil
-	
-    var array: Array<Dictionary<String, String>> = []
     
+    var image: UIImage!
+	
     @IBAction func cameraButtonPressed(_ sender: AnyObject) {
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
             let picker = UIImagePickerController()
             picker.delegate = self
             picker.sourceType = .camera
-            picker.allowsEditing = true
+            picker.allowsEditing = false
             self.present(picker, animated: true, completion: nil)
         }
         else {
@@ -38,7 +34,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             let picker = UIImagePickerController()
             picker.delegate = self
             picker.sourceType = .photoLibrary
-            picker.allowsEditing = true
+            picker.allowsEditing = false
 			
             self.present(picker, animated: true, completion: nil)
         }
@@ -60,30 +56,31 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         present(alertVC, animated: true, completion: nil)
     }
     
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            print("didFinishPickingImage")
+            if (picker.sourceType == .camera) {
+                UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+            }
+            self.image = image
+        }
+        else {
+            print("Something went wrong")
+        }
+        picker.dismiss(animated: false, completion: nil)
+        self.performSegue(withIdentifier: "ToCrop", sender: self)
+    }
+    /*
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         print("didFinishPickingImage")
-        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
-		
-		messageFrame = UIView(frame: CGRect(x: self.view.frame.midX - spinner_width/2, y: self.view.frame.midY - spinner_width/2, width: spinner_width, height: spinner_width))
-		messageFrame.layer.cornerRadius = 15
-		messageFrame.backgroundColor = UIColor(white: 0.8, alpha: 0.9)
-		
-		spinner = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
-		spinner.frame = CGRect(x: 0, y: 0, width: spinner_width, height: spinner_width)
-		picker.view.addSubview(messageFrame)
-		messageFrame.addSubview(spinner)
-		
-		spinner.startAnimating()
-		
-		DispatchQueue.global().async {
-			self.array = Recognition().parse(image: image)
-			DispatchQueue.main.async {
-				self.spinner.stopAnimating()
-				picker.dismiss(animated: false, completion: nil)
-				self.performSegue(withIdentifier: "ToTable", sender: self)
-			}
-		}
+        if (picker.sourceType == .camera) {
+            UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+        }
+        self.image = image
+        picker.dismiss(animated: false, completion: nil)
+		self.performSegue(withIdentifier: "ToCrop", sender: self)
     }
+ */
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -111,9 +108,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "ToTable") {
-            let svc = segue.destination as! DetailViewController;
-            svc.array = self.array
+        if (segue.identifier == "ToCrop") {
+            let svc = segue.destination as! CropViewController;
+            svc.image = self.image
         }
     }
 }
