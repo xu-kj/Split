@@ -8,11 +8,12 @@
 
 import UIKit
 import MGSwipeTableCell
+import ContactsUI
 
 let ThrowingThreshold: CGFloat = 1000
 let ThrowingVelocityPadding: CGFloat = 35
 
-class DetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, DataEnteredDelegate, MGSwipeTableCellDelegate {
+class DetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, DataEnteredDelegate, MGSwipeTableCellDelegate, CNContactPickerDelegate {
 	
 	@IBOutlet weak var totalLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
@@ -23,30 +24,39 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 //	let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(DetailViewController.longTap(_:)))
 	
     var containerView = UIView()
-	var start = 10
-	var width = 50
+	var start  = 10
+	var width  = 50
 	var height = 50
 	var margin = 10
-	var sep = 10
+	var sep    = 10
 	
 	var startingTag = 100
 	
     var editedIndex = -1
     
+    enum newContactSource {
+        case blank, contacts, social
+    }
+    var newContactType = newContactSource.blank
+    
 	let addButton = UIButton()
     var array: Array<Dictionary<String, String> > = []
+    var newContact: Dictionary<String, String> = [:]
 	
 	var itemArray: Array<Set<UIButton> > = []
 	var buttonArray: Array<UIButton> = []
 	var curHighlightButton: UIButton? = nil
 	var contactArray: Array<Dictionary<String, String> > = []
 	var curSum: Double = 0.0
-    
 	
 	fileprivate var animator: UIDynamicAnimator!
 	fileprivate var attachmentBehavior: UIAttachmentBehavior!
 	fileprivate var pushBehavior: UIPushBehavior!
 	fileprivate var itemBehavior: UIDynamicItemBehavior!
+    
+    class func getAppDelegate() -> AppDelegate {
+        return UIApplication.shared.delegate as! AppDelegate
+    }
 	
     @IBAction func barButtonTapped(_ sender: UIBarButtonItem) {
         if sender.title == "Done" {
@@ -61,6 +71,7 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             shakeButton()
 			sender.title = "Done"
 		}
+        
         curSum = 0.0
         tableView.reloadData()
     }
@@ -82,6 +93,12 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
     
+    func importContact(_ sender: AnyObject) {
+        let contactPickerViewController = CNContactPickerViewController()
+        contactPickerViewController.delegate = self
+        self.present(contactPickerViewController, animated: true, completion: nil)
+    }
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
         let i = textField.tag
         if i % 2 == 1 {
@@ -93,6 +110,7 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             array[i / 2 - 1]["price"] = str
         }
     }
+    
     /*
     @IBAction func sendEmailButtonTapped(_ sender: AnyObject) {
         if (MFMailComposeViewController.canSendMail()) {
@@ -244,7 +262,7 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         addButton.frame = CGRect(x: start, y: margin, width: width, height: height)
         
         if index + 1 <= buttonArray.count - 1 {
-            for i in index + 1...buttonArray.count - 1 {
+            for i in (index + 1)..<buttonArray.count {
                 var frame:CGRect = buttonArray[i].frame
                 frame.origin.x = frame.origin.x - CGFloat(width + sep)
                 buttonArray[i].frame = frame
@@ -272,7 +290,11 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 			(sender: MGSwipeTableCell!) -> Bool in
 			print("Convenience callback for swipe buttons!")
 			self.array.remove(at: (tableView.indexPath(for: sender)!).row)
+            self.itemArray.remove(at: (tableView.indexPath(for: sender)!).row)
 			tableView.deleteRows(at: [tableView.indexPath(for: sender)!], with: .left)
+            
+            self.curSum = 0.0
+            tableView.reloadData()
 			return true
 		})]
 		
@@ -388,7 +410,6 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 //		
 //	}
 	
-	
     func shakeButton() {
         let frame = CAKeyframeAnimation(keyPath: "transform.rotation")
         let left = CGFloat(-M_PI_2*0.20)
@@ -405,6 +426,42 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         // panGesture.isEnabled = true
         addButton.isHidden = true
     }
+    
+    func showMessage(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        let dismissAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (action) -> Void in
+        }
+        
+        alertController.addAction(dismissAction)
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+//    func requestForContactsAccess(completionHandler: @escaping (_ accessGranted: Bool) -> Void) {
+//        let authorizationStatus = CNContactStore.authorizationStatus(for: CNEntityType.contacts)
+//        
+//        switch authorizationStatus {
+//        case .authorized:
+//            completionHandler(true)
+//            
+//        case .denied, .notDetermined:
+//            self.contactStore.requestAccess(for: CNEntityType.contacts, completionHandler: { (access, accessError) -> Void in
+//                if access {
+//                    completionHandler(access)
+//                }
+//                else {
+//                    if authorizationStatus == CNAuthorizationStatus.denied {
+//                        DispatchQueue.main.async(execute: { () -> Void in
+//                            let message = "\(accessError!.localizedDescription)\n\nPlease allow the app to access your contacts through the Settings."
+//                            self.showMessage(title: "Warning", message: message)
+//                        })
+//                    }
+//                }
+//            })
+//            
+//        default:
+//            completionHandler(false)
+//        }
+//    }
 	
 	func deleteContact(_ sender: UIButton) {
 		print("contact to be deleted")
@@ -412,8 +469,66 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 	
 	func addContact(_ sender: UIButton) {
         print ("button to addcontact clicked")
-		self.performSegue(withIdentifier: "ToAddContact", sender: sender)
+        let alertController = UIAlertController(
+            title: "Choose how to add a contact.",
+            message: nil,
+            preferredStyle: .actionSheet)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in }
+        let createAction = UIAlertAction(title: "Create new contact", style: .default) { (_) in
+            // print("create new contact")
+            self.newContactType = .blank
+            self.performSegue(withIdentifier: "ToAddContact", sender: sender)
+        }
+        let importAction = UIAlertAction(title: "Import from Contacts", style: .default) { (_) in
+            // print("trying to import from contacts")
+            self.newContactType = .contacts
+            self.importContact(sender)
+        }
+        let importRecentAction = UIAlertAction(title: "Recent Contacts", style: .default) { (_) in
+            // Save recent contacts... Do stuff...
+            self.showMessage(title: "INFO", message: "Functionality under development.")
+        }
+        let importFacebookAction = UIAlertAction(title: "Import Facebook Contacts", style: .default) { (_) in
+            // Exploit Facebook API... Do stuff...
+            self.showMessage(title: "INFO", message: "Functionality under development.")
+        }
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(createAction)
+        alertController.addAction(importRecentAction)
+        alertController.addAction(importAction)
+        alertController.addAction(importFacebookAction)
+        
+        self.present(alertController, animated: true) {}
 	}
+    
+    func contactPicker(_ picker: CNContactPickerViewController, didSelect contact: CNContact){
+//        let name: String = contact.givenName + " " + contact.familyName
+        let name: String = contact.givenName
+        var phone: String = ""
+        var email: String = ""
+        
+//        just get the first email
+        if contact.emailAddresses.count > 0 {
+            email = contact.emailAddresses[0].value as String
+        }
+        for number in contact.phoneNumbers {
+            if number.label == CNLabelPhoneNumberMobile {
+                phone = number.value.stringValue
+            }
+        }
+        
+        newContact["name"] = name
+        newContact["mobile"] = phone
+        newContact["email"] = email
+        
+        self.performSegue(withIdentifier: "ToAddContact", sender: addButton)
+    }
+    
+    func contactPickerDidCancel(_ picker: CNContactPickerViewController) {
+        print("Cancel Contact Picker")
+    }
 	
 	func changeContact(_ sender: UIButton) {
 		print ("Normal tap")
@@ -424,6 +539,7 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             curHighlightButton?.layer.backgroundColor = UIColor.gray.cgColor
             sender.layer.backgroundColor = UIColor(red: 39.0/255.0, green: 78.0/255.0, blue: 192.0/255.0, alpha: 1.0).cgColor
             curHighlightButton = sender
+            
             curSum = 0.0
             tableView.reloadData()
         }
@@ -450,11 +566,11 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 	
 	func userDidEnterInformation(name: String, mobile: String, email: String) {
 		print(name)
-        if (editBarButtonItem.title == "Done") {
+        if editBarButtonItem.title == "Done" && editedIndex != -1 {
             buttonArray[editedIndex].setTitle(name, for: UIControlState.normal)
-            contactArray[editedIndex]["name"] = name;
+            contactArray[editedIndex]["name"]   = name;
             contactArray[editedIndex]["mobile"] = mobile;
-            contactArray[editedIndex]["email"] = email;
+            contactArray[editedIndex]["email"]  = email;
             editedIndex = -1
         }
         else {
@@ -504,8 +620,63 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
     
     func becomeActive(_ notification: NSNotification) {
         editBarButtonItem.title = "Edit"
-        addButton.isHidden = false
-		panGesture.isEnabled = false
+        addButton.isHidden      = false
+		panGesture.isEnabled    = false
+    }
+    
+    func addItemButtonTapped(_ sender: UIButton) {
+        print ("button to add item clicked")
+        
+        let alertController = UIAlertController(
+            title: "Add Item",
+            message: nil,
+            preferredStyle: .alert)
+        
+//        Add functionality to add another receipt
+        
+        let addItemAction = UIAlertAction(title: "Add", style: .default) { (_) in
+            let nameField  = alertController.textFields![0] as UITextField
+            let priceField = alertController.textFields![1] as UITextField
+            
+            self.array.append(["name": nameField.text!,
+                               "price": priceField.text!])
+            self.itemArray.append(Set<UIButton>())
+            
+            self.curSum = 0.0
+            self.tableView.reloadData()
+        }
+        addItemAction.isEnabled = false
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (_) in }
+        
+        alertController.addTextField { (textField) in
+            textField.placeholder = "Item Name"
+            textField.borderStyle = UITextBorderStyle.none
+            
+            NotificationCenter.default.addObserver(forName: NSNotification.Name.UITextFieldTextDidChange, object: textField, queue: OperationQueue.main) { (notification) in
+                addItemAction.isEnabled = textField.text != ""
+            }
+        }
+        
+        alertController.addTextField { (textField) in
+            textField.placeholder = "Item Price"
+            textField.borderStyle = UITextBorderStyle.none
+            
+            textField.keyboardType = UIKeyboardType.numberPad
+            let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 50))
+            toolBar.barStyle = UIBarStyle.default
+            toolBar.items = [
+                UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.plain, target: nil, action: nil),
+                UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil),
+                UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.plain, target: nil, action: nil)]
+            toolBar.sizeToFit()
+            textField.inputAccessoryView = toolBar
+        }
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(addItemAction)
+        
+        self.present(alertController, animated: true) {}
     }
 	
 	override func viewDidLoad() {
@@ -518,7 +689,6 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             selector: #selector(DetailViewController.becomeActive(_:)),
             name: NSNotification.Name.UIApplicationDidBecomeActive,
             object: nil)
-
         
 		self.title = "Bill Details"
         self.navigationController?.navigationBar.topItem?.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil);
@@ -548,14 +718,15 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 		scrollView.addSubview(containerView)
         
         let footerView = UIView(frame: CGRect(x:0, y:0, width:tableView.frame.size.width, height:35))
-        let myButton = UIButton()
-        myButton.frame = CGRect(x: self.view.frame.midX - 40, y: 0, width: 80, height: 35)
+        let addItemButton = UIButton()
+        addItemButton.frame = CGRect(x: self.view.frame.midX - 40, y: 0, width: 80, height: 35)
         // loginButton.addTarget(self, action: "loginAction", forControlEvents: .TouchUpInside)
-        myButton.setTitle("Add", for: UIControlState.normal)
-        myButton.setTitleColor(UIColor(red: 39/255.0, green: 78/255.0, blue: 192/255.0, alpha: 0.7), for: UIControlState.normal)
-        myButton.layer.borderWidth = 2
-        myButton.layer.borderColor = UIColor(red: 39/255.0, green: 78/255.0, blue: 192/255.0, alpha: 0.7).cgColor
-        footerView.addSubview(myButton)
+        addItemButton.setTitle("Add", for: UIControlState.normal)
+        addItemButton.setTitleColor(UIColor(red: 39/255.0, green: 78/255.0, blue: 192/255.0, alpha: 0.7), for: UIControlState.normal)
+        addItemButton.layer.borderWidth = 2
+        addItemButton.layer.borderColor = UIColor(red: 39/255.0, green: 78/255.0, blue: 192/255.0, alpha: 0.7).cgColor
+        addItemButton.addTarget(self, action: #selector(DetailViewController.addItemButtonTapped(_:)), for: UIControlEvents.touchUpInside)
+        footerView.addSubview(addItemButton)
         tableView.tableFooterView = footerView
 	}
     
@@ -571,43 +742,52 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 	}
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "ToAddContact") {
-            let svc = segue.destination as! AddContactViewController
-            svc.delegate = self
-            let button = sender as! UIButton
-            if button != addButton {
-                editedIndex = buttonArray.index(of: button)!
-                let dict: Dictionary<String, String> = contactArray[editedIndex]
-                svc.name = dict["name"]
-                svc.mobile = dict["mobile"]
-                svc.email = dict["email"]
-            }
-        }
-        if (segue.identifier == "ToSummary") {
-            let svc = segue.destination as! SummaryViewController;
-            
-            var itemDict:Dictionary<String, Array<String>> = [:]
-            var priceDict:Dictionary<String, Array<String>> = [:]
-            var totalDict:Dictionary<String, Double> = [:]
-            for contact in contactArray {
-                // name cannot be the same
-                itemDict[contact["name"]!] = []
-                priceDict[contact["name"]!] = []
-                totalDict[contact["name"]!] = 0
-            }
-            for i in 0..<itemArray.count {
-                let set = itemArray[i]
-                for button in set {
-                    itemDict[button.title(for: UIControlState.normal)!]?.append(array[i]["name"]!)
-                    priceDict[button.title(for: UIControlState.normal)!]?.append("$" + array[i]["price"]!)
-                    let val = (array[i]["price"]! as NSString).doubleValue / Double(set.count)
-                    totalDict[button.title(for: UIControlState.normal)!]? += val
+        if let identifier = segue.identifier {
+            if (identifier == "ToAddContact") {
+                let svc = segue.destination as! AddContactViewController
+                svc.delegate = self
+                let button = sender as! UIButton
+                if button != addButton {
+                    editedIndex = buttonArray.index(of: button)!
+                    let dict: Dictionary<String, String> = contactArray[editedIndex]
+                    svc.name   = dict["name"]
+                    svc.mobile = dict["mobile"]
+                    svc.email  = dict["email"]
                 }
+                else if newContactType == .contacts {
+                    svc.name   = newContact["name"]
+                    svc.mobile = newContact["mobile"]
+                    svc.email  = newContact["email"]
+                    newContact = [String: String]()
+                }
+                newContactType = .blank
             }
-            svc.itemDict = itemDict
-            svc.priceDict = priceDict
-            svc.totalDict = totalDict
-            svc.contactArray = self.contactArray
+            else if (identifier == "ToSummary") {
+                let svc = segue.destination as! SummaryViewController
+                
+                var itemDict:Dictionary<String, Array<String>> = [:]
+                var priceDict:Dictionary<String, Array<String>> = [:]
+                var totalDict:Dictionary<String, Double> = [:]
+                for contact in contactArray {
+                    // name cannot be the same
+                    itemDict[contact["name"]!] = []
+                    priceDict[contact["name"]!] = []
+                    totalDict[contact["name"]!] = 0
+                }
+                for i in 0..<itemArray.count {
+                    let set = itemArray[i]
+                    for button in set {
+                        itemDict[button.title(for: UIControlState.normal)!]?.append(array[i]["name"]!)
+                        priceDict[button.title(for: UIControlState.normal)!]?.append("$" + array[i]["price"]!)
+                        let val = (array[i]["price"]! as NSString).doubleValue / Double(set.count)
+                        totalDict[button.title(for: UIControlState.normal)!]? += val
+                    }
+                }
+                svc.itemDict = itemDict
+                svc.priceDict = priceDict
+                svc.totalDict = totalDict
+                svc.contactArray = self.contactArray
+            }
         }
     }
 }
