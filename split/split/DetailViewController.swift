@@ -106,6 +106,10 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         }
         else {
             var str:String = textField.text!
+            
+            // TODO:
+            // if price field becomes empty after editing, app crashes...
+            
             str.remove(at: str.startIndex)
             array[i / 2 - 1]["price"] = str
         }
@@ -298,6 +302,9 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 			return true
 		})]
 		
+        // TODO:
+        // check if price is "" after editing
+        
 		cell.rightSwipeSettings.transition = MGSwipeTransition.border
 		
         let item : UITextField = cell.itemTextField
@@ -467,8 +474,12 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 		print("contact to be deleted")
 	}
 	
-	func addContact(_ sender: UIButton) {
+    func addContact(_ sender: UIButton) {
         print ("button to addcontact clicked")
+        
+        // TODO:
+        // check duplicate contacts (names)...
+        
         let alertController = UIAlertController(
             title: "Choose how to add a contact.",
             message: nil,
@@ -673,6 +684,10 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             textField.inputAccessoryView = toolBar
         }
         
+        // TODO:
+        // 1. check priceField empty or not. If empty, make it 0.0, not ""
+        // 2. make keyboard disappear after tapping "Done" -> Look up AddContact
+        
         alertController.addAction(cancelAction)
         alertController.addAction(addItemAction)
         
@@ -763,6 +778,9 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
                 newContactType = .blank
             }
             else if (identifier == "ToSummary") {
+                // TODO:
+                // move "ToSummary" segue to ViewController
+                
                 let svc = segue.destination as! SummaryViewController
                 
                 var itemDict:Dictionary<String, Array<String>> = [:]
