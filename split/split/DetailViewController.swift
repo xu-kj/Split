@@ -13,7 +13,7 @@ import ContactsUI
 let ThrowingThreshold: CGFloat = 1000
 let ThrowingVelocityPadding: CGFloat = 35
 
-class DetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, DataEnteredDelegate, MGSwipeTableCellDelegate, CNContactPickerDelegate {
+class DetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, DataEnteredDelegate, MGSwipeTableCellDelegate, CNContactPickerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 	
 	@IBOutlet weak var totalLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
@@ -48,6 +48,8 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 	var curHighlightButton: UIButton? = nil
 	var contactArray: Array<Dictionary<String, String> > = []
 	var curSum: Double = 0.0
+    
+    var image: UIImage!
 	
 	fileprivate var animator: UIDynamicAnimator!
 	fileprivate var attachmentBehavior: UIAttachmentBehavior!
@@ -91,12 +93,6 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             tableView.deselectRow(at: indexPath as IndexPath, animated: false)
             self.tableView(tableView, didDeselectRowAt: indexPath as IndexPath)
         }
-    }
-    
-    func importContact(_ sender: AnyObject) {
-        let contactPickerViewController = CNContactPickerViewController()
-        contactPickerViewController.delegate = self
-        self.present(contactPickerViewController, animated: true, completion: nil)
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
@@ -303,14 +299,15 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 		})]
 		
         // TODO:
-        // check if price is "" after editing
+        // 1. check if price is "" after editing
+        // 2. add toolbar with "Done" button for the decimal Pad
         
 		cell.rightSwipeSettings.transition = MGSwipeTransition.border
 		
         let item : UITextField = cell.itemTextField
 		item.autocorrectionType = .no
         let price : UITextField = cell.priceTextField
-        item.tag = 2 * row + 1
+        item.tag  = 2 * row + 1
         price.tag = 2 * row + 2
         price.keyboardType = UIKeyboardType.decimalPad
 		price.inputAccessoryView = UIToolbar()
@@ -478,10 +475,11 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         print ("button to addcontact clicked")
         
         // TODO:
-        // check duplicate contacts (names)...
+        // 1. check duplicate contacts (names)...
+        // 2. change name property to First Name and Last Name
         
         let alertController = UIAlertController(
-            title: "Choose how to add a contact.",
+            title: nil,
             message: nil,
             preferredStyle: .actionSheet)
         
@@ -497,11 +495,11 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             self.importContact(sender)
         }
         let importRecentAction = UIAlertAction(title: "Recent Contacts", style: .default) { (_) in
-            // Save recent contacts... Do stuff...
+            // Save recent contacts...
             self.showMessage(title: "INFO", message: "Functionality under development.")
         }
-        let importFacebookAction = UIAlertAction(title: "Import Facebook Contacts", style: .default) { (_) in
-            // Exploit Facebook API... Do stuff...
+        let importFacebookAction = UIAlertAction(title: "Import from Facebook", style: .default) { (_) in
+            // Exploit Facebook API...
             self.showMessage(title: "INFO", message: "Functionality under development.")
         }
         
@@ -514,9 +512,24 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         self.present(alertController, animated: true) {}
 	}
     
+    func importContact(_ sender: AnyObject) {
+        let contactPickerViewController = CNContactPickerViewController()
+        contactPickerViewController.delegate = self
+        self.present(contactPickerViewController, animated: true, completion: nil)
+    }
+    
     func contactPicker(_ picker: CNContactPickerViewController, didSelect contact: CNContact){
 //        let name: String = contact.givenName + " " + contact.familyName
-        let name: String = contact.givenName
+        var name: String = ""
+        if !contact.givenName.isEmpty {
+            name = String(contact.givenName[contact.givenName.startIndex]).uppercased()
+        }
+        if !contact.familyName.isEmpty {
+            if name != "" {
+                name += "."
+            }
+            name += String(contact.familyName[contact.familyName.startIndex]).uppercased()
+        }
         var phone: String = ""
         var email: String = ""
         
@@ -639,11 +652,41 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         print ("button to add item clicked")
         
         let alertController = UIAlertController(
-            title: "Add Item",
+            title: nil,
+            message: nil,
+            preferredStyle: .actionSheet)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in }
+        let addSingleItemAction = UIAlertAction(title: "Add single item", style: .default) { (_) in
+            self.addSingleItem();
+        }
+        
+        let addPhotoAction = UIAlertAction(title: "Add receipt from photo", style: .default) { (_) in
+//            self.showMessage(title: "INFO", message: "Functionality under development.")
+            self.addReceiptFromPhoto();
+        }
+        
+        let addAlbumAction = UIAlertAction(title: "Add receipt from album", style: .default) { (_) in
+//            self.showMessage(title: "INFO", message: "Functionality under development.")
+            self.addReceiptFromAlbum();
+        }
+        
+        alertController.addAction(cancelAction)
+        alertController.addAction(addSingleItemAction)
+        alertController.addAction(addPhotoAction)
+        alertController.addAction(addAlbumAction)
+        
+        self.present(alertController, animated: true) {}
+    }
+    
+    func addSingleItem() {
+        var nameValid: Bool = false
+        var priceValid: Bool = false
+        
+        let alertController = UIAlertController(
+            title: "Add Single Item",
             message: nil,
             preferredStyle: .alert)
-        
-//        Add functionality to add another receipt
         
         let addItemAction = UIAlertAction(title: "Add", style: .default) { (_) in
             let nameField  = alertController.textFields![0] as UITextField
@@ -665,33 +708,71 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             textField.borderStyle = UITextBorderStyle.none
             
             NotificationCenter.default.addObserver(forName: NSNotification.Name.UITextFieldTextDidChange, object: textField, queue: OperationQueue.main) { (notification) in
-                addItemAction.isEnabled = textField.text != ""
+                nameValid = (textField.text != "")
+                addItemAction.isEnabled = nameValid && priceValid
             }
         }
         
         alertController.addTextField { (textField) in
             textField.placeholder = "Item Price"
             textField.borderStyle = UITextBorderStyle.none
+//            textField.text = "0.0"
+//            if set to 0.0, should clear the text when user start editing
+            textField.text = ""
+            textField.keyboardType = UIKeyboardType.decimalPad
             
-            textField.keyboardType = UIKeyboardType.numberPad
-            let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 50))
-            toolBar.barStyle = UIBarStyle.default
-            toolBar.items = [
-                UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.plain, target: nil, action: nil),
-                UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil),
-                UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.plain, target: nil, action: nil)]
-            toolBar.sizeToFit()
-            textField.inputAccessoryView = toolBar
+            NotificationCenter.default.addObserver(forName: NSNotification.Name.UITextFieldTextDidChange, object: textField, queue: OperationQueue.main) { (notification) in
+                let num = Double(textField.text!)
+                priceValid = (textField.text != "") && num != nil
+                addItemAction.isEnabled = nameValid && priceValid
+            }
         }
-        
-        // TODO:
-        // 1. check priceField empty or not. If empty, make it 0.0, not ""
-        // 2. make keyboard disappear after tapping "Done" -> Look up AddContact
         
         alertController.addAction(cancelAction)
         alertController.addAction(addItemAction)
         
         self.present(alertController, animated: true) {}
+    }
+    
+    func addReceiptFromPhoto() {
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            let picker = UIImagePickerController()
+            picker.delegate = self
+            picker.sourceType = .camera
+            picker.allowsEditing = false
+            self.present(picker, animated: true, completion: nil)
+        }
+        else {
+            self.showMessage(title: "Sorry!", message: "Cannot access camera.")
+        }
+    }
+    
+    func addReceiptFromAlbum() {
+        if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+            let picker = UIImagePickerController()
+            picker.delegate = self
+            picker.sourceType = .photoLibrary
+            picker.allowsEditing = false
+            self.present(picker, animated: true, completion: nil)
+        }
+        else {
+            self.showMessage(title: "Sorry!", message: "Cannot access camera.")
+        }
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            print("didFinishPickingImage")
+            if (picker.sourceType == .camera) {
+                UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+            }
+            self.image = image
+        }
+        else {
+            print("Something went wrong")
+        }
+        picker.dismiss(animated: false, completion: nil)
+        self.performSegue(withIdentifier: "ToCrop", sender: self)
     }
 	
 	override func viewDidLoad() {
@@ -805,6 +886,10 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
                 svc.priceDict = priceDict
                 svc.totalDict = totalDict
                 svc.contactArray = self.contactArray
+            }
+            else if (identifier == "ToCrop") {
+                let svc = segue.destination as! CropViewController;
+                svc.image = self.image
             }
         }
     }

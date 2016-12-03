@@ -19,9 +19,14 @@ class AddContactViewController: UIViewController,  UITextFieldDelegate {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var saveButton: UIButton!
 	weak var delegate: DataEnteredDelegate? = nil
+    
     var name:String!
     var mobile:String!
     var email:String!
+    
+    class func getAppDelegate() -> AppDelegate {
+        return UIApplication.shared.delegate as! AppDelegate
+    }
 	
     @IBAction func saveButtonClicked(_ sender: AnyObject) {
         print("save button clicked")
@@ -39,10 +44,10 @@ class AddContactViewController: UIViewController,  UITextFieldDelegate {
         return true
     }
     
-    func keyboardCancelButtonTapped() {
-        mobileTextField.text = ""
-        mobileTextField.resignFirstResponder()
-    }
+//    func keyboardCancelButtonTapped() {
+//        mobileTextField.text = ""
+//        mobileTextField.resignFirstResponder()
+//    }
     
     func keyboardDoneButtonTapped() {
         mobileTextField.resignFirstResponder()
@@ -60,7 +65,7 @@ class AddContactViewController: UIViewController,  UITextFieldDelegate {
         let toolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: 50))
         toolBar.barStyle = UIBarStyle.default
         toolBar.items = [
-            UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.plain, target: nil, action: #selector(self.keyboardCancelButtonTapped)),
+//            UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.plain, target: nil, action: #selector(self.keyboardCancelButtonTapped)),
             UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.flexibleSpace, target: nil, action: nil),
             UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.plain, target: nil, action: #selector(self.keyboardDoneButtonTapped))]
         toolBar.sizeToFit()

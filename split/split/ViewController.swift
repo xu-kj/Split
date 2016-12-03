@@ -35,7 +35,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             picker.delegate = self
             picker.sourceType = .photoLibrary
             picker.allowsEditing = false
-			
             self.present(picker, animated: true, completion: nil)
         }
         else {
@@ -70,6 +69,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         picker.dismiss(animated: false, completion: nil)
         self.performSegue(withIdentifier: "ToCrop", sender: self)
     }
+    
     /*
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
         print("didFinishPickingImage")
@@ -84,6 +84,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // change color of the status bar (or its characters) when the ImagePicker loads
+        
         // Do any additional setup after loading the view, typically from a nib.
         let cameraImage = UIImage(named:"assets/camera.png")?.withRenderingMode(.automatic)
         cameraButton.setImage(cameraImage, for:.normal)
