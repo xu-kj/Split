@@ -23,29 +23,42 @@
                         <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nfj-A2-knG">
-                                <rect key="frame" x="133" y="64" width="109" height="106"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nfj-A2-knG">
+                                <rect key="frame" x="137.5" y="50" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="4cw-tC-kYt"/>
+                                    <constraint firstAttribute="height" constant="100" id="j29-Tb-gnj"/>
+                                </constraints>
                                 <connections>
                                     <action selector="cameraButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Sms-Py-d3U"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qQK-hh-f0R">
-                                <rect key="frame" x="133" y="392" width="109" height="106"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qQK-hh-f0R">
+                                <rect key="frame" x="137.5" y="453" width="100" height="100"/>
                                 <connections>
                                     <segue destination="gEb-q6-Vhn" kind="show" id="asv-79-Mgf"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iBP-2b-3rz">
-                                <rect key="frame" x="133" y="228" width="109" height="106"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iBP-2b-3rz">
+                                <rect key="frame" x="137.5" y="251.5" width="100" height="100"/>
                                 <connections>
                                     <action selector="albumButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JHS-rC-BE4"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="qQK-hh-f0R" firstAttribute="width" secondItem="Nfj-A2-knG" secondAttribute="width" id="2ea-uB-EE9"/>
+                            <constraint firstItem="qQK-hh-f0R" firstAttribute="centerX" secondItem="Nfj-A2-knG" secondAttribute="centerX" id="6cG-Sj-Y4e"/>
+                            <constraint firstItem="iBP-2b-3rz" firstAttribute="width" secondItem="Nfj-A2-knG" secondAttribute="width" id="F4k-KE-PBI"/>
+                            <constraint firstItem="Nfj-A2-knG" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="50" id="JSR-Zs-SqX"/>
+                            <constraint firstItem="iBP-2b-3rz" firstAttribute="height" secondItem="Nfj-A2-knG" secondAttribute="height" id="Ni9-8S-LRs"/>
+                            <constraint firstItem="iBP-2b-3rz" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="TKc-UP-p7p"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="qQK-hh-f0R" secondAttribute="bottom" constant="50" id="dsp-O1-K3a"/>
+                            <constraint firstItem="qQK-hh-f0R" firstAttribute="height" secondItem="Nfj-A2-knG" secondAttribute="height" id="j3x-MD-ZMp"/>
+                            <constraint firstItem="iBP-2b-3rz" firstAttribute="centerX" secondItem="Nfj-A2-knG" secondAttribute="centerX" id="qHE-mx-Imd"/>
+                            <constraint firstItem="Nfj-A2-knG" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="x2d-Pi-XWh"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="k2g-Fz-RjS"/>
                     <connections>
@@ -391,7 +404,7 @@
                     <connections>
                         <outlet property="imageView" destination="B8k-7b-Xcf" id="Voh-Ze-qoR"/>
                         <outlet property="toolBar" destination="6vh-X2-7C2" id="Fki-Nf-Aud"/>
-                        <segue destination="gEb-q6-Vhn" kind="show" identifier="ToTable" id="ND5-xE-Nat"/>
+                        <segue destination="gEb-q6-Vhn" kind="show" identifier="ToTable" customClass="ReplaceSegue" customModule="split" customModuleProvider="target" id="ND5-xE-Nat"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gB4-lg-qyO" userLabel="First Responder" sceneMemberID="firstResponder"/>

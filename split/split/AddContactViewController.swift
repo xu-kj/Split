@@ -34,7 +34,6 @@ class AddContactViewController: UIViewController,  UITextFieldDelegate {
         // save
 		
         delegate?.userDidEnterInformation(name: nameTextField.text!, mobile: mobileTextField.text!, email: emailTextField.text!)
-        self.dismiss(animated: true, completion:nil)//TODO:check
         _ = self.navigationController?.popViewController(animated: true)
     }
 	

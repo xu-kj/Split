@@ -12,6 +12,7 @@ class CropViewController: UIViewController {
     
     var image: UIImage!
     let spinner_width:CGFloat = 60.0
+    let top_margin:CGFloat = 130.0
     var spinner:UIActivityIndicatorView! = nil
     var messageFrame:UIView! = nil
     
@@ -76,6 +77,16 @@ class CropViewController: UIViewController {
         sender.setTranslation(CGPoint.zero, in: self.view)
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ToTable" {
+            let svc = segue.destination as! DetailViewController
+            svc.array.append(contentsOf: self.array)
+            
+            // TODO: 
+            // reload TableView data after adding the new items
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.layoutIfNeeded()
@@ -91,7 +102,7 @@ class CropViewController: UIViewController {
         
         let path = UIBezierPath(rect: blackView.frame)
         
-        path.append(UIBezierPath(rect: CGRect(x: 0, y: 130.0, width: blackView.frame.width, height: blackView.frame.height - 260.0)))
+        path.append(UIBezierPath(rect: CGRect(x: 0, y: top_margin, width: blackView.frame.width, height: blackView.frame.height - 2*top_margin)))
         
         // Give the mask layer the path you just draw
         maskLayer.path = path.cgPath
@@ -103,7 +114,7 @@ class CropViewController: UIViewController {
         blackView.clipsToBounds = true
         
         let broderLayer = CAShapeLayer()
-        broderLayer.path = UIBezierPath(rect: CGRect(x: 0, y: 130.0, width: blackView.frame.width, height: blackView.frame.height - 260.0)).cgPath
+        broderLayer.path = UIBezierPath(rect: CGRect(x: 0, y: top_margin, width: blackView.frame.width, height: blackView.frame.height - 2*top_margin)).cgPath
         broderLayer.strokeColor = UIColor.white.cgColor
         broderLayer.lineWidth = 1.0
         broderLayer.fillColor = UIColor.clear.cgColor
