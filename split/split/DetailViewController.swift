@@ -46,8 +46,8 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 	var buttonArray: Array<UIButton> = []
 	var curHighlightButton: UIButton? = nil
 	var contactArray: Array<Dictionary<String, String> > = []
-	var curSum: Double = 0.0
-    
+	var selectedDict: Dictionary<UIButton, Set<Int>> = [:]
+	
     var image: UIImage!
 	
 	fileprivate var animator: UIDynamicAnimator!
@@ -72,13 +72,12 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             shakeButton()
 			sender.title = "Done"
 		}
-        
-        curSum = 0.0
+
         tableView.reloadData()
+		calculateTotal()
     }
-    
+	
     @IBAction func selectAllItems(_ sender: UIButton) {
-		curSum = 0.0
         for i in 0..<array.count {
             let indexPath = NSIndexPath(row:i, section:0)
             tableView.selectRow(at: indexPath as IndexPath, animated: false, scrollPosition: UITableViewScrollPosition.none)
@@ -109,6 +108,20 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
     
+    func calculateTotal() {
+		if curHighlightButton != nil {
+			var sum:Double = 0.0
+			for item in selectedDict[curHighlightButton!]! {
+				sum = sum + (array[item]["price"]! as NSString).doubleValue / Double(itemArray[item].count)
+			}
+			if sum < 0 {
+				totalLabel.text = String(format:"Total: $0.00")
+			} else {
+				totalLabel.text = String(format:"Total: $%.2f", sum)
+			}
+		}
+	}
+	
     func textFieldDidEndEditing(_ textField: UITextField) {
         let i = textField.tag
         if i % 2 == 1 {
@@ -202,8 +215,6 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         buttonArray.remove(at: index)
         self.containerView.frame = CGRect(x: 0, y: 0, width: start + width + sep, height: height + 20)
         self.scrollView.contentSize = CGSize(width: start + width + sep, height: height + 20)
-        
-        // TODO recalculate
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -217,18 +228,32 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 		cell.rightButtons = [MGSwipeButton(title: "Delete", backgroundColor: UIColor.red, callback: {
 			(sender: MGSwipeTableCell!) -> Bool in
 			print("Convenience callback for swipe buttons!")
-			self.array.remove(at: (tableView.indexPath(for: sender)!).row)
-            self.itemArray.remove(at: (tableView.indexPath(for: sender)!).row)
+			let row = tableView.indexPath(for: sender)!.row
+			self.array.remove(at: row)
+            self.itemArray.remove(at: row)
 			tableView.deleteRows(at: [tableView.indexPath(for: sender)!], with: .left)
-            
-            self.curSum = 0.0
+			for (key, val) in self.selectedDict {
+				if val.contains(row) {
+					self.selectedDict[key]!.remove(row)
+				}
+				var temp:Array<Int> = []
+				for num in val {
+					if num > row {
+						self.selectedDict[key]!.remove(num)
+						temp.append(num - 1)
+					}
+				}
+				for i in temp {
+					self.selectedDict[key]!.insert(i)
+				}
+			}
             tableView.reloadData()
+			self.calculateTotal()
 			return true
 		})]
 		
         // TODO:
-        // 1. check if price is "" after editing
-        // 2. add toolbar with "Done" button for the decimal Pad
+        // 1. add toolbar with "Done" button for the decimal Pad
         
 		cell.rightSwipeSettings.transition = MGSwipeTransition.border
 		
@@ -239,8 +264,8 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         price.tag = 2 * row + 2
         price.keyboardType = UIKeyboardType.decimalPad
 		price.inputAccessoryView = UIToolbar()
-		
-        if (editBarButtonItem.title == "Edit") {
+        
+        if editBarButtonItem.title == "Edit" {
             item.isUserInteractionEnabled = false
             price.isUserInteractionEnabled = false
             item.borderStyle = UITextBorderStyle.none
@@ -254,6 +279,11 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             price.borderStyle = UITextBorderStyle.roundedRect
             cell.selectionStyle = UITableViewCellSelectionStyle.none
         }
+		
+		if buttonArray.isEmpty {
+			cell.selectionStyle = UITableViewCellSelectionStyle.none
+		}
+		
         item.text = array[row]["name"]
         if (editBarButtonItem.title == "Edit") {
             price.text = "$" + array[row]["price"]!
@@ -263,51 +293,55 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         }
 		if curHighlightButton != nil && itemArray[indexPath.row].contains(curHighlightButton!) {
 			tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.none)
-			curSum += (array[row]["price"]! as NSString).doubleValue / Double(itemArray[row].count)
-		}
-		if curSum < 0 {
-			totalLabel.text = String(format:"Total: $0.00")
-		}
-		else {
-			totalLabel.text = String(format:"Total: $%.2f", curSum)
 		}
         return cell
     }
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		if buttonArray.isEmpty {
+			showMessage(title: nil, message: "You have to add a contact first")
+			return
+		}
         if editBarButtonItem.title == "Edit" {
             let row = indexPath.row
             if (curHighlightButton != nil) {
                 itemArray[row].insert(curHighlightButton!)
-                curSum += (array[row]["price"]! as NSString).doubleValue / Double(itemArray[row].count)
-            }
-            else {
-                curSum += (array[row]["price"]! as NSString).doubleValue
-            }
-            if (curSum < 0) {
-                totalLabel.text = String(format:"Total: $0.00")
-            }
-            else {
-                totalLabel.text = String(format:"Total: $%.2f", curSum)
+				selectedDict[curHighlightButton!]!.insert(indexPath.row)
+				
+				var sum:Double = 0.0
+				for item in selectedDict[curHighlightButton!]! {
+					sum = sum + (array[item]["price"]! as NSString).doubleValue / Double(itemArray[item].count)
+				}
+				if sum < 0 {
+					totalLabel.text = String(format:"Total: $0.00")
+				} else {
+					totalLabel.text = String(format:"Total: $%.2f", sum)
+				}
             }
         }
 	}
 	
 	func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+		if buttonArray.isEmpty {
+			showMessage(title: nil, message: "You have to add a contact first")
+			return
+		}
         if editBarButtonItem.title == "Edit" {
             let row = indexPath.row
             if (curHighlightButton != nil) {
-                curSum -= (array[row]["price"]! as NSString).doubleValue / Double(itemArray[row].count)
                 itemArray[row].remove(curHighlightButton!)
+				selectedDict[curHighlightButton!]!.remove(indexPath.row)
+				var sum:Double = 0.0
+				for item in selectedDict[curHighlightButton!]! {
+					sum = sum + (array[item]["price"]! as NSString).doubleValue / Double(itemArray[item].count)
+				}
+				if sum < 0 {
+					totalLabel.text = String(format:"Total: $0.00")
+				} else {
+					totalLabel.text = String(format:"Total: $%.2f", sum)
+				}
             }
             else {
-                curSum -= (array[row]["price"]! as NSString).doubleValue
-            }
-            if (curSum < 0) {
-                totalLabel.text = String(format:"Total: $0.00")
-            }
-            else {
-                totalLabel.text = String(format:"Total: $%.2f", curSum)
             }
         }
 	}
@@ -406,8 +440,7 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         print ("button to addcontact clicked")
         
         // TODO:
-        // 1. check duplicate contacts (names)...
-        // 2. change name property to First Name and Last Name
+        // 1. change name property to First Name and Last Name
         
         let alertController = UIAlertController(
             title: nil,
@@ -492,9 +525,10 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             curHighlightButton?.layer.backgroundColor = UIColor.gray.cgColor
             sender.layer.backgroundColor = UIColor(red: 39.0/255.0, green: 78.0/255.0, blue: 192.0/255.0, alpha: 1.0).cgColor
             curHighlightButton = sender
-            
-            curSum = 0.0
+			
             tableView.reloadData()
+			
+			calculateTotal()
         }
 	}
 	
@@ -521,14 +555,14 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 		print(name)
         if editBarButtonItem.title == "Done" && editedIndex != -1 {
             buttonArray[editedIndex].setTitle(name, for: UIControlState.normal)
-            contactArray[editedIndex]["name"]   = name;
-            contactArray[editedIndex]["mobile"] = mobile;
-            contactArray[editedIndex]["email"]  = email;
+            contactArray[editedIndex]["name"]   = name
+            contactArray[editedIndex]["mobile"] = mobile
+            contactArray[editedIndex]["email"]  = email
             editedIndex = -1
         }
         else {
             contactArray.append(["name": name, "mobile": mobile, "email": email])
-            let usrButton = UIButton();
+            let usrButton = UIButton()
 			usrButton.tag = startingTag
 			startingTag = startingTag + 1
             usrButton.frame = CGRect(x: start, y: margin, width: width, height: height)
@@ -546,7 +580,8 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             start += width + sep
             
             addButton.frame = CGRect(x: start, y: margin, width: width, height: height)
-            
+			
+			selectedDict[usrButton] = Set<Int>()
             buttonArray.append(usrButton)
             if (buttonArray.count == 1) {
                 changeContact(usrButton)
@@ -570,7 +605,6 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 		for _ in 0..<myarray.count {
 			itemArray.append(Set<UIButton>())
 		}
-		curSum = 0.0
 		tableView.reloadData()
 	}
 	
@@ -631,8 +665,6 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             self.array.append(["name": nameField.text!,
                                "price": priceField.text!])
             self.itemArray.append(Set<UIButton>())
-            
-            self.curSum = 0.0
             self.tableView.reloadData()
         }
         addItemAction.isEnabled = false
@@ -778,12 +810,15 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
                 let svc = segue.destination as! AddContactViewController
                 svc.delegate = self
                 let button = sender as! UIButton
+				svc.replace = false
                 if button != addButton {
                     editedIndex = buttonArray.index(of: button)!
                     let dict: Dictionary<String, String> = contactArray[editedIndex]
-                    svc.name   = dict["name"]
-                    svc.mobile = dict["mobile"]
-                    svc.email  = dict["email"]
+                    svc.name    = dict["name"]
+                    svc.mobile  = dict["mobile"]
+                    svc.email   = dict["email"]
+					svc.replace = true
+					svc.originalName = dict["name"]
                 }
                 else if newContactType == .contacts {
                     svc.name   = newContact["name"]
@@ -792,6 +827,8 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
                     newContact = [String: String]()
                 }
                 newContactType = .blank
+				svc.contactArray = self.contactArray
+				
             }
             else if (identifier == "ToSummary") {
                 let svc = segue.destination as! SummaryViewController
