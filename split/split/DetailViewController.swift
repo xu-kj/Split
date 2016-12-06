@@ -95,6 +95,22 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
     
+    @IBAction func proceedToSummary(_ sender: UIButton) {
+        var count: Int = 0
+        for btnSet in itemArray {
+            if btnSet.count > 0 {
+                count += 1
+            }
+        }
+        if count == contactArray.count {
+            self.performSegue(withIdentifier: "ToSummary", sender: sender)
+        }
+        else {
+            self.showMessage(title: "Error", message: "There's at least one item not assigned to any user.")
+        }
+    }
+    
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
         let i = textField.tag
         if i % 2 == 1 {
@@ -787,9 +803,6 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
                 newContactType = .blank
             }
             else if (identifier == "ToSummary") {
-                // TODO:
-                // move "ToSummary" segue to ViewController
-                
                 let svc = segue.destination as! SummaryViewController
                 
                 var itemDict:Dictionary<String, Array<String>> = [:]
