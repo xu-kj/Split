@@ -19,11 +19,15 @@ class AddContactViewController: UIViewController,  UITextFieldDelegate {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var saveButton: UIButton!
 	weak var delegate: DataEnteredDelegate? = nil
-    
+	
     var name:String!
     var mobile:String!
     var email:String!
-    
+	var originalName:String!
+	
+	var replace:Bool!
+    var contactArray: Array<Dictionary<String, String> > = []
+	
     class func getAppDelegate() -> AppDelegate {
         return UIApplication.shared.delegate as! AppDelegate
     }
@@ -31,7 +35,16 @@ class AddContactViewController: UIViewController,  UITextFieldDelegate {
     @IBAction func saveButtonClicked(_ sender: AnyObject) {
         print("save button clicked")
         // check email/mobile filled
-        // save
+		for item in contactArray {
+			if !replace && item["name"] == nameTextField.text! {
+				showMessage(title: "Warning", message: "Duplicate name!")
+				return
+			}
+			if replace && nameTextField.text! != originalName! && item["name"] == nameTextField.text! {
+				showMessage(title: "Warning", message: "Duplicate name!")
+				return
+			}
+		}
 		
         delegate?.userDidEnterInformation(name: nameTextField.text!, mobile: mobileTextField.text!, email: emailTextField.text!)
         _ = self.navigationController?.popViewController(animated: true)
@@ -51,7 +64,16 @@ class AddContactViewController: UIViewController,  UITextFieldDelegate {
     func keyboardDoneButtonTapped() {
         mobileTextField.resignFirstResponder()
     }
-    
+	
+	func showMessage(title: String?, message: String?) {
+		let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+		let dismissAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (action) -> Void in
+		}
+		
+		alertController.addAction(dismissAction)
+		self.present(alertController, animated: true, completion: nil)
+	}
+	
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Add Contact"
