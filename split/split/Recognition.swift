@@ -33,15 +33,14 @@ class Recognition: NSObject, G8TesseractDelegate {
 						if (char >= "0" && char <= "9") {
 							price = "\(char)" + price
 						}
-						if char == "." {
+						else if char == "." {
 							price = "." + price
 							flag = true
 						}
-						if char == " " && flag {
+						else if char == " " && flag {
 							break;
 						}
 					}
-					
 					
 					fullNameArr.remove(at: fullNameArr.count - 1)
 					fullNameArr.remove(at: fullNameArr.count - 1)

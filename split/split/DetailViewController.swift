@@ -31,7 +31,6 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 	var sep    = 10
 	
 	var startingTag = 100
-	
     var editedIndex = -1
     
     enum newContactSource {
@@ -110,24 +109,20 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
     
-    
     func textFieldDidEndEditing(_ textField: UITextField) {
         let i = textField.tag
         if i % 2 == 1 {
-            array[i / 2]["name"] = textField.text
+            array[i / 2]["name"] = textField.text!
         }
         else {
             var str:String = textField.text!
-            
-            // TODO:
-            // if price field becomes empty after editing, app crashes...
-            
-            str.remove(at: str.startIndex)
+            if str == "" {
+                str = "0.00"
+            }
             array[i / 2 - 1]["price"] = str
         }
     }
     
-
     func handleAttachmentGesture(_ sender: UIPanGestureRecognizer) {
         if (editBarButtonItem.title == "Done") {
             let location = sender.location(in: self.view)
@@ -139,7 +134,6 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
                 animator.removeAllBehaviors()
 				let centerOffset = UIOffset(horizontal: 0, vertical: boxLocation.y - myButton.bounds.midY)
                 attachmentBehavior = UIAttachmentBehavior(item: myButton, offsetFromCenter: centerOffset, attachedToAnchor: location)
-                
                 
                 animator.addBehavior(attachmentBehavior)
                 
@@ -261,7 +255,12 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             cell.selectionStyle = UITableViewCellSelectionStyle.none
         }
         item.text = array[row]["name"]
-        price.text = "$" + array[row]["price"]!
+        if (editBarButtonItem.title == "Edit") {
+            price.text = "$" + array[row]["price"]!
+        }
+        else {
+            price.text = array[row]["price"]!
+        }
 		if curHighlightButton != nil && itemArray[indexPath.row].contains(curHighlightButton!) {
 			tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.none)
 			curSum += (array[row]["price"]! as NSString).doubleValue / Double(itemArray[row].count)
@@ -320,7 +319,6 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 		return false
 	}
 	
-	
 //	func swipeTableCell(_ cell: MGSwipeTableCell, swipeButtonsFor direction: MGSwipeDirection, swipeSettings: MGSwipeSettings, expansionSettings: MGSwipeExpansionSettings) -> [UIView]? {
 //		
 //		swipeSettings.transition = MGSwipeTransition.border;
@@ -353,7 +351,6 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         let left = CGFloat(-M_PI_2*0.20)
         let right = CGFloat(M_PI_2*0.20)
 		
-		
         frame.values = [left, right, left];
         frame.duration = 0.2;
         frame.repeatCount = Float.infinity;
@@ -365,7 +362,7 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         addButton.isHidden = true
     }
     
-    func showMessage(title: String, message: String) {
+    func showMessage(title: String?, message: String?) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         let dismissAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default) { (action) -> Void in
         }
@@ -419,12 +416,10 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in }
         let createAction = UIAlertAction(title: "Create new contact", style: .default) { (_) in
-            // print("create new contact")
             self.newContactType = .blank
             self.performSegue(withIdentifier: "ToAddContact", sender: sender)
         }
         let importAction = UIAlertAction(title: "Import from Contacts", style: .default) { (_) in
-            // print("trying to import from contacts")
             self.newContactType = .contacts
             self.importContact(sender)
         }
@@ -570,8 +565,7 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         }
 	}
 	
-	func photoEndedRecognition(myarray: Array<Dictionary<String, String>>)
-	{
+	func photoEndedRecognition(myarray: Array<Dictionary<String, String>>) {
 		array.append(contentsOf: myarray)
 		for _ in 0..<myarray.count {
 			itemArray.append(Set<UIButton>())
@@ -595,23 +589,22 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
     func addItemButtonTapped(_ sender: UIButton) {
         print ("button to add item clicked")
         
-        let alertController = UIAlertController(
-            title: nil,
-            message: nil,
-            preferredStyle: .actionSheet)
+        let alertController = UIAlertController(title: nil,
+                                                message: nil,
+                                                preferredStyle: .actionSheet)
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action) in }
-        let addSingleItemAction = UIAlertAction(title: "Add single item", style: .default) { (_) in
+        let cancelAction = UIAlertAction(title: "Cancel",
+                                         style: .cancel) { (action) in }
+        let addSingleItemAction = UIAlertAction(title: "Add single item",
+                                                style: .default) { (_) in
             self.addSingleItem();
         }
-        
-        let addPhotoAction = UIAlertAction(title: "Add receipt from camera", style: .default) { (_) in
-//            self.showMessage(title: "INFO", message: "Functionality under development.")
+        let addPhotoAction = UIAlertAction(title: "Add receipt from camera",
+                                           style: .default) { (_) in
             self.addReceiptFromPhoto();
         }
-        
-        let addAlbumAction = UIAlertAction(title: "Add receipt from album", style: .default) { (_) in
-//            self.showMessage(title: "INFO", message: "Functionality under development.")
+        let addAlbumAction = UIAlertAction(title: "Add receipt from album",
+                                           style: .default) { (_) in
             self.addReceiptFromAlbum();
         }
         
@@ -627,10 +620,9 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         var nameValid: Bool = false
         var priceValid: Bool = false
         
-        let alertController = UIAlertController(
-            title: "Add Single Item",
-            message: nil,
-            preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Add Single Item",
+                                                message: nil,
+                                                preferredStyle: .alert)
         
         let addItemAction = UIAlertAction(title: "Add", style: .default) { (_) in
             let nameField  = alertController.textFields![0] as UITextField
@@ -721,7 +713,6 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
 		animator = UIDynamicAnimator(referenceView: view)
 		
         NotificationCenter.default.addObserver(

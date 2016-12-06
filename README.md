@@ -25,6 +25,7 @@ Current App TODO list: [+] as finished
     - [] "Save / Discard"
     - [+] "Delete"
     - [+] "Add Person"
+    - [] Delete person
     - [+] "Import from Contacts"
     - [] "Import from Facebook"
     - [] "Save", Icons and Name Initials
