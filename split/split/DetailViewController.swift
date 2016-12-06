@@ -716,7 +716,7 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             print("Something went wrong")
         }
         picker.dismiss(animated: false, completion: nil)
-        self.performSegue(withIdentifier: "detailToCrop", sender: self)
+        self.performSegue(withIdentifier: "ToCrop", sender: self)
     }
 	
 	override func viewDidLoad() {
@@ -828,7 +828,7 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
                 svc.totalDict = totalDict
                 svc.contactArray = self.contactArray
             }
-            else if (identifier == "detailToCrop") {
+            else if (identifier == "ToCrop") {
                 let svc = segue.destination as! CropViewController;
 				svc.delegate = self
                 svc.image = self.image
