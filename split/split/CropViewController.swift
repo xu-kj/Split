@@ -8,6 +8,11 @@
 
 import UIKit
 
+
+protocol RecognitionEndedDelegate: class {
+	func photoEndedRecognition(myarray: Array<Dictionary<String, String>>)
+}
+
 class CropViewController: UIViewController {
 	
 	var image: UIImage!
@@ -19,11 +24,13 @@ class CropViewController: UIViewController {
 	var messageFrame:UIView! = nil
 	
 	var array: Array<Dictionary<String, String>> = []
+	var fromMainScreen: Bool = true
 	
 	let pintch =  UIPinchGestureRecognizer()
 	let pan =  UIPanGestureRecognizer()
 	var croppedImage = UIImage()
 	
+	weak var delegate: RecognitionEndedDelegate? = nil
 	@IBOutlet weak var imageView: UIImageView!
 	
 	@IBOutlet weak var toolBar: UIToolbar!
@@ -96,17 +103,20 @@ class CropViewController: UIViewController {
 			cropRect.size.height = temp2
 		}
 		
-		
 		croppedImage = cropImage(image: image, toRect: cropRect)
-		
-		
 		
 		DispatchQueue.global().async {
 			self.array = Recognition().parse(image: self.croppedImage)
 			DispatchQueue.main.async {
 				self.spinner.stopAnimating()
 		//			_ = self.navigationController?.popViewController(animated: false)
-				self.performSegue(withIdentifier: "ToTable", sender: self)
+				if self.fromMainScreen == true {
+					self.performSegue(withIdentifier: "ToTable", sender: self)
+				} else {
+					// pop view controller and pass the array back
+					self.delegate?.photoEndedRecognition(myarray: self.array)
+					_ = self.navigationController?.popViewController(animated: true)
+				}
 			}
 		}
 	}

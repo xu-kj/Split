@@ -13,7 +13,7 @@ import ContactsUI
 let ThrowingThreshold: CGFloat = 1000
 let ThrowingVelocityPadding: CGFloat = 35
 
-class DetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, DataEnteredDelegate, MGSwipeTableCellDelegate, CNContactPickerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class DetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, DataEnteredDelegate, RecognitionEndedDelegate, MGSwipeTableCellDelegate, CNContactPickerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 	
 	@IBOutlet weak var totalLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
@@ -111,86 +111,7 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
     
-    /*
-    @IBAction func sendEmailButtonTapped(_ sender: AnyObject) {
-        if (MFMailComposeViewController.canSendMail()) {
-            let mail = MFMailComposeViewController()
-            mail.mailComposeDelegate = self
-            var itemDict:Dictionary<String, Array<String>> = [:]
-            var totalDict:Dictionary<String, Double> = [:]
-            
-            var toRecipients:Array<String> = []
-            for contact in contactArray {
-                // name cannot be the same
-                itemDict[contact["name"]!] = []
-                totalDict[contact["name"]!] = 0
-                if contact["email"] != "" {
-                    toRecipients.append(contact["email"]!)
-                }
-            }
-            mail.setToRecipients(toRecipients)
-            
-            mail.setSubject("Split!: splitting details")
-            
-            var messageBody:String = "Splitting details:\n\n"
-            for i in 0..<itemArray.count {
-                let set = itemArray[i]
-                for button in set {
-                    itemDict[button.title(for: UIControlState.normal)!]?.append("$" + array[i]["price"]! + "   " + array[i]["name"]!)
-                    let val = (array[i]["price"]! as NSString).doubleValue / Double(set.count)
-                    totalDict[button.title(for: UIControlState.normal)!]? += val
-                }
-            }
-            for contact in itemDict {
-                messageBody.append(contact.key + "'s items:\n")
-                messageBody.append(contact.value.joined(separator: "\n"))
-                messageBody.append("\n")
-                messageBody.append(String(format:"Total: $%.2f\n\n", totalDict[contact.key]!))
-            }
-            mail.setMessageBody(messageBody, isHTML: false)
-            self.present(mail, animated: true, completion: nil)
-        }
-        if (MFMessageComposeViewController.canSendText()) {
-            let message = MFMessageComposeViewController()
-            message.messageComposeDelegate = self
-            
-            var itemDict:Dictionary<String, Array<String>> = [:]
-            var totalDict:Dictionary<String, Double> = [:]
-            
-            var toRecipients:Array<String> = []
-            for contact in contactArray {
-                // name cannot be the same
-                itemDict[contact["name"]!] = []
-                totalDict[contact["name"]!] = 0
-                if contact["mobile"] != "" {
-                    toRecipients.append(contact["mobile"]!)
-                }
-            }
-            message.recipients = toRecipients
-            message.title = "Split!: splitting details"
-            message.subject = "Split!: splitting details"
-            
-            var messageBody:String = "Splitting details:\n\n"
-            for i in 0..<itemArray.count {
-                let set = itemArray[i]
-                for button in set {
-                    itemDict[button.title(for: UIControlState.normal)!]?.append("$" + array[i]["price"]! + "   " + array[i]["name"]!)
-                    let val = (array[i]["price"]! as NSString).doubleValue / Double(set.count)
-                    totalDict[button.title(for: UIControlState.normal)!]? += val
-                }
-            }
-            for contact in itemDict {
-                messageBody.append(contact.key + "'s items:\n")
-                messageBody.append(contact.value.joined(separator: "\n"))
-                messageBody.append("\n")
-                messageBody.append(String(format:"Total: $%.2f\n\n", totalDict[contact.key]!))
-            }
-            message.body = messageBody
-            self.present(message, animated: true, completion: nil)
-        }
-    }
- */
-    
+
     func handleAttachmentGesture(_ sender: UIPanGestureRecognizer) {
         if (editBarButtonItem.title == "Done") {
             let location = sender.location(in: self.view)
@@ -200,10 +121,7 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             switch sender.state {
             case .began:
                 animator.removeAllBehaviors()
-                
-                //			let centerOffset = UIOffset(horizontal: boxLocation.x - myButton.bounds.midX, vertical: boxLocation.y - myButton.bounds.midY)
-                
-                let centerOffset = UIOffset(horizontal: 0, vertical: boxLocation.y - myButton.bounds.midY)
+				let centerOffset = UIOffset(horizontal: 0, vertical: boxLocation.y - myButton.bounds.midY)
                 attachmentBehavior = UIAttachmentBehavior(item: myButton, offsetFromCenter: centerOffset, attachedToAnchor: location)
                 
                 
@@ -635,13 +553,23 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             }
         }
 	}
-    
+	
+	func photoEndedRecognition(myarray: Array<Dictionary<String, String>>)
+	{
+		array.append(contentsOf: myarray)
+		for _ in 0..<myarray.count {
+			itemArray.append(Set<UIButton>())
+		}
+		curSum = 0.0
+		tableView.reloadData()
+	}
+	
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         array[textField.tag / 2]["name"] = textField.text
         textField.resignFirstResponder()
         return true
     }
-    
+	
     func becomeActive(_ notification: NSNotification) {
         editBarButtonItem.title = "Edit"
         addButton.isHidden      = false
@@ -661,7 +589,7 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             self.addSingleItem();
         }
         
-        let addPhotoAction = UIAlertAction(title: "Add receipt from photo", style: .default) { (_) in
+        let addPhotoAction = UIAlertAction(title: "Add receipt from camera", style: .default) { (_) in
 //            self.showMessage(title: "INFO", message: "Functionality under development.")
             self.addReceiptFromPhoto();
         }
@@ -772,7 +700,7 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
             print("Something went wrong")
         }
         picker.dismiss(animated: false, completion: nil)
-        self.performSegue(withIdentifier: "ToCrop", sender: self)
+        self.performSegue(withIdentifier: "detailToCrop", sender: self)
     }
 	
 	override func viewDidLoad() {
@@ -887,9 +815,11 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
                 svc.totalDict = totalDict
                 svc.contactArray = self.contactArray
             }
-            else if (identifier == "ToCrop") {
+            else if (identifier == "detailToCrop") {
                 let svc = segue.destination as! CropViewController;
+				svc.delegate = self
                 svc.image = self.image
+				svc.fromMainScreen = false
             }
         }
     }

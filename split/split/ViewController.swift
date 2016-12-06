@@ -69,18 +69,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         picker.dismiss(animated: false, completion: nil)
         self.performSegue(withIdentifier: "ToCrop", sender: self)
     }
-    
-    /*
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingImage image: UIImage, editingInfo: [String : AnyObject]?) {
-        print("didFinishPickingImage")
-        if (picker.sourceType == .camera) {
-            UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
-        }
-        self.image = image
-        picker.dismiss(animated: false, completion: nil)
-		self.performSegue(withIdentifier: "ToCrop", sender: self)
-    }
- */
+	
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -114,6 +103,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         if (segue.identifier == "ToCrop") {
             let svc = segue.destination as! CropViewController;
             svc.image = self.image
+			svc.fromMainScreen = true
         }
     }
 }
