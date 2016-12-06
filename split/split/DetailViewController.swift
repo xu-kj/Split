@@ -102,7 +102,7 @@ class DetailViewController: UIViewController, UITableViewDataSource, UITableView
                 count += 1
             }
         }
-        if count == contactArray.count {
+        if count == array.count {
             self.performSegue(withIdentifier: "ToSummary", sender: sender)
         }
         else {
