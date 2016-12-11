@@ -1,5 +1,5 @@
 # Split!
-This is a brief introduction of the Split! App.
+For students who frequently split bills unevenly with friends, our iOS app *Split!* provides easy and quick splitting in 3 steps, scan, select, and summary. Unlike existing bill splitting apps, our product has clean user interface and user-friendly functions.
 
 Current App TODO list: [+] as finished
 
