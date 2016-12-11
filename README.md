@@ -51,3 +51,9 @@ Current App TODO list: [+] as finished
     - [] Each record is a card with title, user icons, date, and total
     - [] Tap on the card to view the record
     - [] "Return" to return to the List
+
+The open source libraries we are using are:
+
+- TesseractOCRiOS
+- MGSwipeTableCell
+- IQKeyboardManagerSwift
